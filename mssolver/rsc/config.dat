@@ -1,0 +1,57 @@
+Grid
+{
+	format      : "Gmsh"
+	file_path   : "rsc/grid/1D.msh"
+    DIMENSION   : 1
+}
+
+Problem
+{
+	governing_equation  : "Linear_Advection"
+	Initial_condition   : "Sine_Wave"
+	DIMENSION           : 1
+
+	Linear_Advection_Option
+	{
+		x1_advection_speed		: 1.0
+	}
+
+	Sine_Wave_Option
+	{
+		x1_wave_length			: 1.0
+	}
+}
+
+Discretization
+{
+    Time
+    {
+        SCHEME  : Euler_Explicit
+    }
+
+    Time_STEP
+    {
+        TYPE       : CFL
+        CRITERION  : 0.9
+    }
+
+    SPACE
+    {
+        SCHEME          : FVM
+        numerical_flux  : upwind
+    }
+}
+
+Solve_Option
+{
+    END
+    {
+        CONDITION   : TIME
+        CRITERION   : 1.0
+    }
+    POST
+    {
+        CONDITION  : TIME
+        CRITERION  : 0.1
+    }
+}

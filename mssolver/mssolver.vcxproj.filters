@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="소스 파일\Governing Equation">
+      <UniqueIdentifier>{bd2b2a25-1f9f-4928-8c8d-fe66b284cf58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Semi_Discrete_Equation">
+      <UniqueIdentifier>{4ebf3332-1365-4a7d-9a60-b05973e70721}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Inital_Condition">
+      <UniqueIdentifier>{5e2db2dd-a67e-4fd7-8003-758433510840}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Semi_Discrete_Equation\Discrete_Solution">
+      <UniqueIdentifier>{dddbc96d-fde3-4836-9860-c841b5a6ba90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Semi_Discrete_Equation\Time_Step_Calculator">
+      <UniqueIdentifier>{2ffe3a95-1ae4-4495-b841-f8ea6e094b1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Semi_Discrete_Equation\Time_Step_Calculator\Radii_Calculator">
+      <UniqueIdentifier>{59f8f057-b819-4f83-9ed3-25633a3ddf5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Time_Discretization">
+      <UniqueIdentifier>{714c69fb-dc00-4362-8aad-c827a557a1ce}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Discrete_Equation.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Governing_Equation_Impl.cpp">
+      <Filter>소스 파일\Governing Equation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Governing_Equation_Container.cpp">
+      <Filter>소스 파일\Governing Equation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Initial_Condition_Container.cpp">
+      <Filter>소스 파일\Inital_Condition</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Initial_Condition_Impl.cpp">
+      <Filter>소스 파일\Inital_Condition</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Discrete_Solution_FVM.cpp">
+      <Filter>소스 파일\Semi_Discrete_Equation\Discrete_Solution</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Semi_Discrete_Equation_Impl.cpp">
+      <Filter>소스 파일\Semi_Discrete_Equation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Time_Step_Calculator_Impl.cpp">
+      <Filter>소스 파일\Semi_Discrete_Equation\Time_Step_Calculator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Time_Step_Calculator_Factory.cpp">
+      <Filter>소스 파일\Semi_Discrete_Equation\Time_Step_Calculator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Radii_Calculator.cpp">
+      <Filter>소스 파일\Semi_Discrete_Equation\Time_Step_Calculator\Radii_Calculator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Time_Discrete_Scheme_Impl.cpp">
+      <Filter>소스 파일\Time_Discretization</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Time_Discrete_Scheme_Container.cpp">
+      <Filter>소스 파일\Time_Discretization</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Semi_Discrete_Equation_Factory.cpp">
+      <Filter>소스 파일\Semi_Discrete_Equation</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Discrete_Equation.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Governing_Equation.h">
+      <Filter>소스 파일\Governing Equation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Governing_Equation_Impl.h">
+      <Filter>소스 파일\Governing Equation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Governing_Equation_Container.h">
+      <Filter>소스 파일\Governing Equation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Semi_Discrete_Equation.h">
+      <Filter>소스 파일\Semi_Discrete_Equation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Initial_Condition_Container.h">
+      <Filter>소스 파일\Inital_Condition</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Initial_Condition.h">
+      <Filter>소스 파일\Inital_Condition</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Initial_Condition_Impl.h">
+      <Filter>소스 파일\Inital_Condition</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Discrete_Solution_FVM.h">
+      <Filter>소스 파일\Semi_Discrete_Equation\Discrete_Solution</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Semi_Discrete_Equation_Impl.h">
+      <Filter>소스 파일\Semi_Discrete_Equation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Time_Step_Calculator.h">
+      <Filter>소스 파일\Semi_Discrete_Equation\Time_Step_Calculator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Time_Step_Calculator_Impl.h">
+      <Filter>소스 파일\Semi_Discrete_Equation\Time_Step_Calculator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Time_Step_Calculator_Factory.h">
+      <Filter>소스 파일\Semi_Discrete_Equation\Time_Step_Calculator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Radii_Calculator.h">
+      <Filter>소스 파일\Semi_Discrete_Equation\Time_Step_Calculator\Radii_Calculator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Time_Discrete_Scheme.h">
+      <Filter>소스 파일\Time_Discretization</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Time_Discrete_Scheme_Impl.h">
+      <Filter>소스 파일\Time_Discretization</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Time_Discrete_Scheme_Container.h">
+      <Filter>소스 파일\Time_Discretization</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Semi_Discrete_Equation_Factory.h">
+      <Filter>소스 파일\Semi_Discrete_Equation</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
