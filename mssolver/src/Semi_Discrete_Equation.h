@@ -7,14 +7,14 @@ class Semi_Discrete_Equation
 public:
   // virtual std::vector<double>      calculate_error_norms(const ms::grid::Grid& grid, const double end_time) const = 0;
   // virtual void                     reconstruct(void)                                                              = 0;
-  virtual void update_residual(void) = 0;
-  // virtual ms::math::Vector_Wrapper solution_vector(void) = 0;
+  virtual void                     update_residual(void) = 0;
+  virtual ms::math::Vector_Wrapper solution_vector(void) = 0;
 
 public:
-  virtual double calculate_time_step(void) const = 0;
+  virtual double                         calculate_time_step(void) const   = 0;
+  virtual ms::math::Vector_Const_Wrapper const_residual_vector(void) const = 0;
   // virtual ms::math::Vector<>             copy_solution_vector(void) const        = 0;
   // virtual ms::math::Vector<>             copy_RHS_vector(void) const             = 0;
-  // virtual ms::math::Vector_Const_Wrapper const_RHS_vector(void) const            = 0;
 };
 
 // #include "Boundaries.h"

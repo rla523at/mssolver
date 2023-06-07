@@ -34,6 +34,18 @@
     <Filter Include="소스 파일\Time_Discretization">
       <UniqueIdentifier>{714c69fb-dc00-4362-8aad-c827a557a1ce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Semi_Discrete_Equation\Flux">
+      <UniqueIdentifier>{60c5bcd9-55ed-469d-8b46-40fc8969dd45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Semi_Discrete_Equation\Flux\Boundary">
+      <UniqueIdentifier>{0a833129-0b2a-499b-ad0a-9e0c9e8b4212}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Semi_Discrete_Equation\Flux\Numerical">
+      <UniqueIdentifier>{1d89107d-15b4-425c-b091-9d093d0bf57b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Solve_Option">
+      <UniqueIdentifier>{c9a2b52a-e8a2-4d2f-8e38-1773c2a164bc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -77,6 +89,27 @@
     </ClCompile>
     <ClCompile Include="src\Semi_Discrete_Equation_Factory.cpp">
       <Filter>소스 파일\Semi_Discrete_Equation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Boundary_Flux_Impl.cpp">
+      <Filter>소스 파일\Semi_Discrete_Equation\Flux\Boundary</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Numerical_Flux_Impl.cpp">
+      <Filter>소스 파일\Semi_Discrete_Equation\Flux\Numerical</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Numerical_Flux_Container.cpp">
+      <Filter>소스 파일\Semi_Discrete_Equation\Flux\Numerical</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Boundary_Flux_Factory.cpp">
+      <Filter>소스 파일\Semi_Discrete_Equation\Flux\Boundary</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Solve_Controller_Impl.cpp">
+      <Filter>소스 파일\Solve_Option</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Solve_Controller_Containercpp.cpp">
+      <Filter>소스 파일\Solve_Option</Filter>
+    </ClCompile>
+    <ClCompile Include="src\post.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +166,36 @@
     </ClInclude>
     <ClInclude Include="src\Semi_Discrete_Equation_Factory.h">
       <Filter>소스 파일\Semi_Discrete_Equation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Boundary_Flux.h">
+      <Filter>소스 파일\Semi_Discrete_Equation\Flux\Boundary</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Boundary_Flux_Factory.h">
+      <Filter>소스 파일\Semi_Discrete_Equation\Flux\Boundary</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Boundary_Flux_Impl.h">
+      <Filter>소스 파일\Semi_Discrete_Equation\Flux\Boundary</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Numerical_Flux.h">
+      <Filter>소스 파일\Semi_Discrete_Equation\Flux\Numerical</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Numerical_Flux_Impl.h">
+      <Filter>소스 파일\Semi_Discrete_Equation\Flux\Numerical</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Numerical_Flux_Container.h">
+      <Filter>소스 파일\Semi_Discrete_Equation\Flux\Numerical</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Solve_Controller.h">
+      <Filter>소스 파일\Solve_Option</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Solve_Controller_Impl.h">
+      <Filter>소스 파일\Solve_Option</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Solve_Controller_Container.h">
+      <Filter>소스 파일\Solve_Option</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Post.h">
+      <Filter>소스 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

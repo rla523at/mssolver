@@ -5,16 +5,15 @@
 #include "Initial_Condition.h"
 #include "Initial_Condition_Container.h"
 
-
 Discrete_Solution_FVM::Discrete_Solution_FVM(const ms::config::Data& problem_data, const ms::grid::Grid& grid)
     : _governing_equation(Governing_Equation_Container::get(problem_data))
 {
   // make initial condition
-  const auto& initial_condition = Initial_Condition_Container::get(problem_data);
+  const auto& initial_condition = *Initial_Condition_Container::get(problem_data);
 
   const auto dimension = grid.dimension();
   const auto num_cells = grid.num_cells();
-  const auto num_sols  = this->_governing_equation.num_equations();
+  const auto num_sols  = this->_governing_equation->num_equations();
 
   this->_solution_values.resize(num_cells * num_sols);
   auto solution_ptr = this->_solution_values.data();
@@ -28,19 +27,28 @@ Discrete_Solution_FVM::Discrete_Solution_FVM(const ms::config::Data& problem_dat
   }
 }
 
+ms::math::Vector_Wrapper Discrete_Solution_FVM::solution_vector(void)
+{
+  return _solution_values;
+}
+
 void Discrete_Solution_FVM::cal_characteristic_velocity(double* characteristic_velocity, const int cell_number) const
 {
   const auto sol = this->const_solution_vector(cell_number);
-  this->_governing_equation.cal_characteristic_speed(characteristic_velocity,sol);
+  this->_governing_equation->cal_characteristic_speed(characteristic_velocity, sol);
 }
-
 
 ms::math::Vector_Const_Wrapper Discrete_Solution_FVM::const_solution_vector(const int cell_number) const
 {
-  const auto num_sols     = this->_governing_equation.num_equations();
+  const auto num_sols     = this->_governing_equation->num_equations();
   const auto jump         = cell_number * num_sols;
   const auto solution_ptr = this->_solution_values.data() + jump;
 
   const auto solution = ms::math::Vector_Const_Wrapper(solution_ptr, num_sols);
   return solution;
+}
+
+int Discrete_Solution_FVM::num_DOF(void) const
+{
+  return static_cast<int>(this->_solution_values.size());
 }

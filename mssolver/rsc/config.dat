@@ -26,19 +26,19 @@ Discretization
 {
     Time
     {
-        SCHEME  : Euler_Explicit
+        SCHEME  : "Euler_Explicit"
     }
 
     Time_STEP
     {
-        TYPE       : CFL
+        TYPE       : "CFL"
         CRITERION  : 0.9
     }
 
     SPACE
     {
-        SCHEME          : FVM
-        numerical_flux  : upwind
+        SCHEME          : "FVM"
+        numerical_flux  : "upwind"
     }
 }
 
@@ -46,12 +46,21 @@ Solve_Option
 {
     END
     {
-        CONDITION   : TIME
+        CONDITION   : "TIME"
         CRITERION   : 1.0
     }
     POST
     {
-        CONDITION  : TIME
+        CONDITION  : "TIME"
         CRITERION  : 0.1
     }
+}
+
+POST_OPTION
+{
+    FORMAT              : "ASCII"
+    PATH                : "result/"
+    TITLE               : "test"
+    PARTITION_ORDER     : 0
+    SOLUTION_LOCATION   : CENTER
 }

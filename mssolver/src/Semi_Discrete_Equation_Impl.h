@@ -5,8 +5,8 @@
 
 // forward declaration
 class Time_Step_Calculator;
-class Boundary_Flux_Function;
-class Numerical_Flux_Function;
+class Boundary_Flux;
+class Numerical_Flux;
 
 // class declaration
 class Semi_Discrete_Equation_FVM : public Semi_Discrete_Equation
@@ -17,11 +17,12 @@ public:
 public:
   // std::vector<double>      calculate_error_norms(const ms::grid::Grid& grid, const double end_time) const override;
   //  void                     reconstruct(void) override;
-  void update_residual(void) override;
-  // ms::math::Vector_Wrapper solution_vector(void) override;
+  void                     update_residual(void) override;
+  ms::math::Vector_Wrapper solution_vector(void) override;
 
 public:
-  double calculate_time_step(void) const override;
+  double                         calculate_time_step(void) const override;
+  ms::math::Vector_Const_Wrapper const_residual_vector(void) const override;
   // ms::math::Vector<>             copy_solution_vector(void) const override;
   // ms::math::Vector_Const_Wrapper const_RHS_vector(void) const override;
   // ms::math::Vector<>             copy_RHS_vector(void) const override;
@@ -30,25 +31,26 @@ private:
   ms::math::Vector_Wrapper residual_vector(const int cell_index);
 
 private:
+  Discrete_Solution_FVM                 _solution;
+  std::vector<double>                   _residual;
+  std::unique_ptr<Time_Step_Calculator> _time_step_calculator_ptr;
+  std::shared_ptr<Numerical_Flux>       _numerical_flux_ptr;
+  int                                   _num_equations;
+
   // data for cells
   int                 _num_cells;
-  std::vector<double> _cell_index_to_reciprocal_volume;
+  std::vector<double> _cell_number_to_reciprocal_volume;
 
   // data for boundaries
-  int                                 _num_boundaries;
-  std::vector<int>                    _bdry_index_to_oc_index;
-  std::vector<Boundary_Flux_Function> _bdry_index_to_flux_function;
-  std::vector<std::vector<double>>    _bdry_index_to_normal;
-  std::vector<double>                 _bdry_index_to_volume;
+  int                                         _num_boundaries;
+  std::vector<int>                            _bdry_index_to_oc_number;
+  std::vector<std::unique_ptr<Boundary_Flux>> _bdry_index_to_flux_ptr;
+  std::vector<std::vector<double>>            _bdry_index_to_normal;
+  std::vector<double>                         _bdry_index_to_volume;
 
   // data for innerfaces
-  int                              _num_inner_faces;
-  std::vector<std::pair<int, int>> _infc_index_to_oc_nc_index;
-  Numerical_Flux_Function          _numerical_flux_function;
+  int                              _num_inter_cell_faces;
+  std::vector<std::pair<int, int>> _infc_number_to_oc_nc_number_pair;
   std::vector<std::vector<double>> _infc_index_to_normal;
-  std::vector<double>              _infc_index_to_volume;
-
-  Discrete_Solution_FVM                 _solution;
-  std::unique_ptr<Time_Step_Calculator> _time_step_calculator_uptr;
-  std::vector<double>                   _residual;
+  std::vector<double>              _infc_number_to_volume;
 };

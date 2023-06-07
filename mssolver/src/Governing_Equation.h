@@ -8,6 +8,7 @@ class Governing_Equation
 public:
   virtual void cal_characteristic_speed(double* characteristic_speed, const ms::math::Vector_Const_Wrapper solution) const = 0;
   virtual void cal_flux(ms::math::Matrix& flux, const ms::math::Vector_Const_Wrapper solution) const                       = 0;
+  virtual int  dimension(void) const                                                                                       = 0;
   virtual void solution_names(std::string* names) const                                                                    = 0;
   virtual int  num_equations(void) const                                                                                   = 0;
   virtual int  num_extended_solutions(void) const                                                                          = 0;

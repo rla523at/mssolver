@@ -6,7 +6,7 @@
 void Euler_Explicit::update(Semi_Discrete_Equation& semi_discrete_equation, const double time_step) const
 {
   auto       solution_v = semi_discrete_equation.solution_vector();
-  const auto RHS_v      = semi_discrete_equation.const_RHS_vector();
+  const auto RHS_v      = semi_discrete_equation.const_residual_vector();
 
   const auto n = static_cast<int>(solution_v.dimension());
 

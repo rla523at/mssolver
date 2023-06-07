@@ -1,18 +1,19 @@
 #pragma once
 #include "Governing_Equation.h"
 
-// forward declaration
-class Governing_Equation_Container;
-
 // class declaration
 class Linear_Advection : public Governing_Equation
 {
 public:
   void cal_characteristic_speed(double* characteristic_speed, const ms::math::Vector_Const_Wrapper solution) const override;
   void cal_flux(ms::math::Matrix& flux, const ms::math::Vector_Const_Wrapper solution) const override;
+  int  dimension(void) const override;
   void solution_names(std::string* names) const override;
   int  num_equations(void) const override;
   int  num_extended_solutions(void) const override;
+
+public:
+  ms::math::Vector_Const_Wrapper advection_velocity_vector(void) const;
 
 private:
   std::vector<double> _advection_velocity;
@@ -22,12 +23,8 @@ private:
       : _advection_velocity(advection_velocity, advection_velocity + dimension){};
 
 private:
+  class Governing_Equation_Container;
   friend Governing_Equation_Container;
-
-private:
-  // Time_Discrete_Scheme objects can be created only once in the Container class.
-  // To prevent unnecessary creation, acess to the constructor has been blocked
-  Linear_Advection(void) = default;
 };
 
 //

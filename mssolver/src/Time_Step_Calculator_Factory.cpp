@@ -3,10 +3,10 @@
 #include "Time_Step_Calculator_Impl.h"
 #include "msstring/string.h"
 
-std::unique_ptr<Time_Step_Calculator> Time_Step_Calculator_Factory::make_unique(const ms::config::Data& Time_data, const ms::grid::Grid& grid)
+std::unique_ptr<Time_Step_Calculator> Time_Step_Calculator_Factory::make(const ms::config::Data& time_step_data, const ms::grid::Grid& grid)
 {
-  const auto& time_step_type      = Time_data.get_data<std::string>("step_type");
-  const auto  time_step_criterion = Time_data.get_data<double>("time_step_criterion");
+  const auto& time_step_type      = time_step_data.get_data<std::string>("type");
+  const auto  time_step_criterion = time_step_data.get_data<double>("criterion");
 
   if (ms::string::contain_icase(time_step_type, "CFL"))
   {

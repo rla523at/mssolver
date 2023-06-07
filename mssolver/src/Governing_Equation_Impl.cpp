@@ -2,7 +2,7 @@
 
 void Linear_Advection::cal_characteristic_speed(double* characteristic_speed, const ms::math::Vector_Const_Wrapper solution) const
 {
-  const auto dim = this->_advection_velocity.size();
+  const auto dim = this->dimension();
 
   for (int i = 0; i < dim; ++i)
   {
@@ -12,12 +12,17 @@ void Linear_Advection::cal_characteristic_speed(double* characteristic_speed, co
 
 void Linear_Advection::cal_flux(ms::math::Matrix& flux, const ms::math::Vector_Const_Wrapper solution) const
 {
-  const auto dimension = this->_advection_velocity.size();
+  const auto dimension = this->dimension();
 
   for (int i = 0; i < dimension; ++i)
   {
     flux.at(0, i) = this->_advection_velocity[i];
   }
+}
+
+int Linear_Advection::dimension(void) const
+{
+  return static_cast<int>(this->_advection_velocity.size());
 }
 
 void Linear_Advection::solution_names(std::string* names) const
@@ -33,6 +38,11 @@ int Linear_Advection::num_equations(void) const
 int Linear_Advection::num_extended_solutions(void) const
 {
   return 1;
+}
+
+ms::math::Vector_Const_Wrapper Linear_Advection::advection_velocity_vector(void) const
+{
+  return this->_advection_velocity;
 }
 
 //

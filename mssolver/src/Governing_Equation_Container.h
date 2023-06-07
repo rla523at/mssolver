@@ -4,12 +4,14 @@
 
 // forward declaration
 class Governing_Equation;
+class Linear_Advection;
 
 // static class declaration
 class Governing_Equation_Container
 {
 public:
   static std::shared_ptr<Governing_Equation> get(const ms::config::Data& problem_data);
+  static std::shared_ptr<Linear_Advection>   get_linear_advection(const ms::config::Data& problem_data);
 
 private:
   static void create_and_store(const std::string_view KEY, const ms::config::Data& problem_data);

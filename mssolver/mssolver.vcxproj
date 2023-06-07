@@ -135,6 +135,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Boundary_Flux_Factory.cpp" />
+    <ClCompile Include="src\Boundary_Flux_Impl.cpp" />
     <ClCompile Include="src\Discrete_Equation.cpp" />
     <ClCompile Include="src\Discrete_Solution_FVM.cpp" />
     <ClCompile Include="src\Governing_Equation_Container.cpp" />
@@ -142,15 +144,23 @@
     <ClCompile Include="src\Initial_Condition_Container.cpp" />
     <ClCompile Include="src\Initial_Condition_Impl.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Numerical_Flux_Container.cpp" />
+    <ClCompile Include="src\Numerical_Flux_Impl.cpp" />
+    <ClCompile Include="src\post.cpp" />
     <ClCompile Include="src\Radii_Calculator.cpp" />
     <ClCompile Include="src\Semi_Discrete_Equation_Factory.cpp" />
     <ClCompile Include="src\Semi_Discrete_Equation_Impl.cpp" />
+    <ClCompile Include="src\Solve_Controller_Containercpp.cpp" />
+    <ClCompile Include="src\Solve_Controller_Impl.cpp" />
     <ClCompile Include="src\Time_Discrete_Scheme_Container.cpp" />
     <ClCompile Include="src\Time_Discrete_Scheme_Impl.cpp" />
     <ClCompile Include="src\Time_Step_Calculator_Factory.cpp" />
     <ClCompile Include="src\Time_Step_Calculator_Impl.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Boundary_Flux.h" />
+    <ClInclude Include="src\Boundary_Flux_Factory.h" />
+    <ClInclude Include="src\Boundary_Flux_Impl.h" />
     <ClInclude Include="src\Discrete_Equation.h" />
     <ClInclude Include="src\Discrete_Solution_FVM.h" />
     <ClInclude Include="src\Governing_Equation.h" />
@@ -159,10 +169,17 @@
     <ClInclude Include="src\Initial_Condition.h" />
     <ClInclude Include="src\Initial_Condition_Container.h" />
     <ClInclude Include="src\Initial_Condition_Impl.h" />
+    <ClInclude Include="src\Numerical_Flux.h" />
+    <ClInclude Include="src\Numerical_Flux_Container.h" />
+    <ClInclude Include="src\Numerical_Flux_Impl.h" />
+    <ClInclude Include="src\Post.h" />
     <ClInclude Include="src\Radii_Calculator.h" />
     <ClInclude Include="src\Semi_Discrete_Equation.h" />
     <ClInclude Include="src\Semi_Discrete_Equation_Factory.h" />
     <ClInclude Include="src\Semi_Discrete_Equation_Impl.h" />
+    <ClInclude Include="src\Solve_Controller.h" />
+    <ClInclude Include="src\Solve_Controller_Container.h" />
+    <ClInclude Include="src\Solve_Controller_Impl.h" />
     <ClInclude Include="src\Time_Discrete_Scheme.h" />
     <ClInclude Include="src\Time_Discrete_Scheme_Container.h" />
     <ClInclude Include="src\Time_Discrete_Scheme_Impl.h" />

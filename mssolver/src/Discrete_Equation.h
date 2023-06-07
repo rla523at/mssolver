@@ -14,9 +14,6 @@ public:
   void solve(const ms::config::Data& solve_option_data);
 
 private:
-  void controll_time_step(const double current_time, double& time_step) const;
-
-private:
   std::unique_ptr<Semi_Discrete_Equation> _semi_discrete_equation;
   std::shared_ptr<Time_Discrete_Scheme>   _time_discrete_scheme;
 };
