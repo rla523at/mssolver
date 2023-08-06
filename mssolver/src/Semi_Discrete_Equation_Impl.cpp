@@ -6,6 +6,7 @@
 #include "Governing_Equation_Container.h"
 #include "Numerical_Flux.h"
 #include "Numerical_Flux_Container.h"
+#include "Post.h"
 #include "Time_Step_Calculator.h"
 #include "Time_Step_Calculator_Factory.h"
 #include "msmath/BLAS.h"
@@ -20,12 +21,12 @@ Semi_Discrete_Equation_FVM::Semi_Discrete_Equation_FVM(const ms::config::Data& p
 
   const auto& time_step_data            = discretization_data.get_data<ms::config::Data>("time_step");
   const auto& space_discretization_data = discretization_data.get_data<ms::config::Data>("Space");
-  const auto& numerical_flux_name       = discretization_data.get_data<std::string>("numerical_flux");
+  const auto& numerical_flux_name       = space_discretization_data.get_data<std::string>("numerical_flux");
 
   this->_time_step_calculator_ptr = Time_Step_Calculator_Factory::make(time_step_data, grid);
   this->_numerical_flux_ptr       = Numerical_Flux_Container::get(problem_data, numerical_flux_name);
 
-  const auto dim = grid.dimension();
+  this->_dimension = grid.dimension();
 
   // make cell data
   this->_num_cells = grid.num_cells();
@@ -53,7 +54,7 @@ Semi_Discrete_Equation_FVM::Semi_Discrete_Equation_FVM(const ms::config::Data& p
     auto& volume    = this->_bdry_index_to_volume[i];
 
     auto elem_type = grid.boundary_type(i);
-    normal.resize(dim);
+    normal.resize(this->_dimension);
 
     oc_number = grid.boundary_owner_cell_number(i);
     volume    = grid.boundary_volume(i);
@@ -73,7 +74,7 @@ Semi_Discrete_Equation_FVM::Semi_Discrete_Equation_FVM(const ms::config::Data& p
     auto& normal            = this->_infc_index_to_normal[i];
     auto& volume            = this->_infc_number_to_volume[i];
 
-    normal.resize(dim);
+    normal.resize(this->_dimension);
 
     oc_nc_number_pair = grid.inter_cell_face_owner_neighbor_cell_number_pair(i);
     volume            = grid.inter_cell_face_volume(i);
@@ -90,27 +91,24 @@ ms::math::Vector_Wrapper Semi_Discrete_Equation_FVM::solution_vector(void)
 
 void Semi_Discrete_Equation_FVM::update_residual(void)
 {
-  auto       flux   = std::vector<double>();
-  const auto flux_v = ms::math::Vector_Const_Wrapper(flux);
-  const auto n      = flux_v.dimension();
-
   // initialize residual
   std::fill(this->_residual.begin(), this->_residual.end(), 0.0);
 
   // calculate residual at boundary
+  auto flux = ms::math::Vector<0>(this->_num_equations);
   for (int i = 0; i < this->_num_boundaries; ++i)
   {
-    const auto  volume        = this->_bdry_index_to_volume[i];
-    const auto& normal        = this->_bdry_index_to_normal[i];
-    const auto  oc_number     = this->_bdry_index_to_oc_number[i];
-    const auto  oc_solution_v = this->_solution.const_solution_vector(oc_number);
-    auto        oc_residual_v = this->residual_vector(oc_number);
+    const auto  volume          = this->_bdry_index_to_volume[i];
+    const auto& normal_vec      = this->_bdry_index_to_normal[i];
+    const auto  oc_number       = this->_bdry_index_to_oc_number[i];
+    const auto  oc_solution_vec = this->_solution.solution_vector(oc_number);
+    auto        oc_residual_vec = this->residual_vector(oc_number);
 
     auto& boundary_flux_function = this->_bdry_index_to_flux_ptr[i];
 
-    boundary_flux_function->calculate(flux.data(), oc_solution_v, normal);
+    boundary_flux_function->calculate(flux.wrapper(), oc_solution_vec, normal_vec);
 
-    ms::math::blas::x_plus_assign_cy(oc_residual_v.data(), -volume, flux_v.data(), n);
+    ms::math::blas::x_plus_assign_cy(oc_residual_vec.data(), -volume, flux.data(), this->_num_equations);
   }
 
   // calculate residual at innerface
@@ -120,8 +118,8 @@ void Semi_Discrete_Equation_FVM::update_residual(void)
     const auto& normal                = this->_infc_index_to_normal[i];
     const auto [oc_number, nc_number] = this->_infc_number_to_oc_nc_number_pair[i];
 
-    const auto oc_solution_v = this->_solution.const_solution_vector(oc_number);
-    const auto nc_solution_v = this->_solution.const_solution_vector(nc_number);
+    const auto oc_solution_v = this->_solution.solution_vector(oc_number);
+    const auto nc_solution_v = this->_solution.solution_vector(nc_number);
 
     this->_numerical_flux_ptr->calculate(flux.data(), oc_solution_v, nc_solution_v, normal);
 
@@ -142,15 +140,15 @@ void Semi_Discrete_Equation_FVM::update_residual(void)
   }
 }
 
-double Semi_Discrete_Equation_FVM::calculate_time_step(void) const
+double Semi_Discrete_Equation_FVM::calculate_allowable_time_step(void) const
 {
   auto time_step = std::numeric_limits<double>::max();
 
-  std::vector<double> characteristic_velocity;
+  ms::math::Vector<0> characteristic_velocity_vec(this->_dimension);
   for (int i = 0; i < this->_num_cells; ++i)
   {
-    this->_solution.cal_characteristic_velocity(characteristic_velocity.data(), i);
-    const auto allowable_time_step = this->_time_step_calculator_ptr->calculate(characteristic_velocity.data(), i);
+    this->_solution.cal_characteristic_velocity(characteristic_velocity_vec.wrapper(), i);
+    const auto allowable_time_step = this->_time_step_calculator_ptr->calculate(characteristic_velocity_vec, i);
 
     if (allowable_time_step < time_step) time_step = allowable_time_step;
   }
@@ -161,6 +159,11 @@ double Semi_Discrete_Equation_FVM::calculate_time_step(void) const
 ms::math::Vector_Const_Wrapper Semi_Discrete_Equation_FVM::const_residual_vector(void) const
 {
   return this->_residual;
+}
+
+void Semi_Discrete_Equation_FVM::post_solution(const double time) const
+{
+  Post::write_solution(this->_solution, time);
 }
 
 ms::math::Vector_Wrapper Semi_Discrete_Equation_FVM::residual_vector(const int cell_index)

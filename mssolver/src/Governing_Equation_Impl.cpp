@@ -1,28 +1,37 @@
 #include "Governing_Equation_Impl.h"
 
-void Linear_Advection::cal_characteristic_speed(double* characteristic_speed, const ms::math::Vector_Const_Wrapper solution) const
+#include "msexception/Exception.h"
+
+void Linear_Advection::cal_characteristic_velocity_vector(ms::math::Vector_Wrapper characteristic_velocity_vec, const ms::math::Vector_Const_Wrapper solution) const
 {
   const auto dim = this->dimension();
+  REQUIRE(characteristic_velocity_vec.dimension() == dim, "dimension should be mathced");
 
   for (int i = 0; i < dim; ++i)
   {
-    characteristic_speed[i] = std::abs(this->_advection_velocity[i]);
+    characteristic_velocity_vec[i] = std::abs(this->_advection_velocity_values[i]);
   }
 }
 
-void Linear_Advection::cal_flux(ms::math::Matrix& flux, const ms::math::Vector_Const_Wrapper solution) const
+void Linear_Advection::cal_flux(ms::math::Matrix_Wrapper flux, const ms::math::Vector_Const_Wrapper solution) const
 {
-  const auto dimension = this->dimension();
+  const auto dim = this->dimension();
+  REQUIRE(flux.num_columns() == dim, "dimensino should be matched");
 
-  for (int i = 0; i < dimension; ++i)
+  for (int i = 0; i < dim; ++i)
   {
-    flux.at(0, i) = this->_advection_velocity[i];
+    flux.at(0, i) = this->_advection_velocity_values[i];
   }
 }
 
 int Linear_Advection::dimension(void) const
 {
-  return static_cast<int>(this->_advection_velocity.size());
+  return static_cast<int>(this->_advection_velocity_values.size());
+}
+
+void Linear_Advection::extend_solution(ms::math::Vector_Wrapper extended_solution, const ms::math::Vector_Const_Wrapper equation_solution) const
+{
+  extended_solution[0] = equation_solution[0];
 }
 
 void Linear_Advection::solution_names(std::string* names) const
@@ -42,7 +51,7 @@ int Linear_Advection::num_extended_solutions(void) const
 
 ms::math::Vector_Const_Wrapper Linear_Advection::advection_velocity_vector(void) const
 {
-  return this->_advection_velocity;
+  return this->_advection_velocity_values;
 }
 
 //

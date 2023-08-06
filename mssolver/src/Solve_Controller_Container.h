@@ -22,3 +22,35 @@ private:
 
   using THIS = Solve_End_Controller_Container;
 };
+
+/*
+
+
+
+
+
+
+
+
+
+*/
+
+class Solve_Post_Controller;
+
+class Solve_Post_Controller_Container // static class
+{
+public:
+  static const Solve_Post_Controller&                  get(const ms::config::Data& solve_post_option);
+  static const std::shared_ptr<Solve_Post_Controller>& get_ptr(const ms::config::Data& solve_post_option);
+
+private:
+  static void create_and_store(const std::string_view KEY, const ms::config::Data& solve_post_option);
+
+private:
+  inline static std::map<std::string, std::shared_ptr<Solve_Post_Controller>> _container;
+
+private:
+  Solve_Post_Controller_Container(void) = delete;
+
+  using THIS = Solve_Post_Controller_Container;
+};

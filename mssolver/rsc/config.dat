@@ -51,8 +51,10 @@ Solve_Option
     }
     POST
     {
-        CONDITION  : "TIME"
-        CRITERION  : 0.1
+        CONDITION       : "TIME"
+        CRITERION       : 0.1
+        POST_INITIAL    : TRUE
+        POST_FINAL      : TRUE
     }
 }
 
@@ -62,5 +64,5 @@ POST_OPTION
     PATH                : "result/"
     TITLE               : "test"
     PARTITION_ORDER     : 0
-    SOLUTION_LOCATION   : CENTER
+    SOLUTION_LOCATION   : "CENTER"
 }

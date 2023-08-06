@@ -8,7 +8,7 @@ public:
   CFL(const double cfl, const ms::grid::Grid& grid);
 
 public:
-  double calculate(const double* characteristic_velocity, const int cell_number) const override;
+  double calculate(const ms::math::Vector_Const_Wrapper characteristic_velocity_vec, const int cell_number) const override;
 
 private:
   double                            _CFL;
@@ -23,7 +23,9 @@ public:
   Constant_Dt(const double constant_dt) : constant_dt_(constant_dt){};
 
 public:
-  double calculate(const std::vector<ms::math::Vector_Const_Wrapper>& cell_number_to_coordinate_projected_maximum_lambdas) const;
+  double calculate(const ms::math::Vector_Const_Wrapper characteristic_velocity_vec, const int cell_number) const override;
+
+  //double calculate(const std::vector<ms::math::Vector_Const_Wrapper>& cell_number_to_coordinate_projected_maximum_lambdas) const override;
 
 private:
   double constant_dt_;

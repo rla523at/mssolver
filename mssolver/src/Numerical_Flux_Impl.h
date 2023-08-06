@@ -4,22 +4,36 @@
 #include "msmath/Matrix.h"
 #include <memory>
 
+class Governing_Equation;
 class Linear_Advection;
-
-// Numerical Flux Function을 만들 때, Governing Equation이 무엇인지 필요하지 않다고 생각했지만 사실은 아니였다...!
-// Numerical Flux Function을 만들 때, Governing Equation이 무엇인지에 대한 정보가 필요할 수도 있다.
-// Numerical Flux Function은 어디에서 만들어지는가 ?
 
 class Godunov_Flux_Linear_Advection : public Numerical_Flux
 {
 public:
-  Godunov_Flux_Linear_Advection(const std::shared_ptr<Linear_Advection>& governing_equation);
+  Godunov_Flux_Linear_Advection(const std::shared_ptr<Linear_Advection>& governing_equation)
+      : _linear_advection(governing_equation){};
 
 public:
-  void calculate(double* numerical_flux_ptr, const ms::math::Vector_Const_Wrapper oc_solution, const ms::math::Vector_Const_Wrapper nc_solution, const ms::math::Vector_Const_Wrapper normal_vector) const override;
+  void calculate(ms::math::Vector_Wrapper numerical_flux_vec, const ms::math::Vector_Const_Wrapper oc_solution_vec, const ms::math::Vector_Const_Wrapper nc_solution_vec, const ms::math::Vector_Const_Wrapper normal_vec) override;
 
 private:
   std::shared_ptr<Linear_Advection> _linear_advection;
+};
+
+class Unstable_Flux : public Numerical_Flux
+{
+public:
+  Unstable_Flux(const std::shared_ptr<Governing_Equation>& governing_equation);
+
+public:
+  void calculate(ms::math::Vector_Wrapper numerical_flux_vec, const ms::math::Vector_Const_Wrapper oc_solution_vec, const ms::math::Vector_Const_Wrapper nc_solution_vec, const ms::math::Vector_Const_Wrapper normal_vec) override;
+
+private:
+  std::shared_ptr<Governing_Equation> _governing_equation_ptr;
+
+  ms::math::Matrix    _owner_cell_physical_flux    = ms::math::Matrix::null_matrix();
+  ms::math::Matrix    _neighbor_cell_physical_flux = ms::math::Matrix::null_matrix();
+  ms::math::Matrix    _sum_flux                    = ms::math::Matrix::null_matrix();
 };
 
 // class LLF : public Numerical_Flux_Function

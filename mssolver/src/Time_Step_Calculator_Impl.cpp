@@ -45,15 +45,15 @@ CFL::CFL(const double cfl, const ms::grid::Grid& grid)
   }
 }
 
-double CFL::calculate(const double* characteristic_velocity, const int cell_number) const
+double CFL::calculate(const ms::math::Vector_Const_Wrapper characteristic_velocity_vec, const int cell_number) const
 {
   const auto& projected_volumes = this->_cell_number_to_projected_volumes[cell_number];
-  const auto  radii             = this->_radii_calculator->calculate(projected_volumes.data(), characteristic_velocity);
+  const auto  radii             = this->_radii_calculator->calculate(projected_volumes.data(), characteristic_velocity_vec);
   const auto  volume            = this->_cell_number_to_volume[cell_number];
   return this->_CFL * volume / radii;
 }
 
-double Constant_Dt::calculate(const std::vector<ms::math::Vector_Const_Wrapper>& cell_number_to_coordinate_projected_maximum_lambdas) const
+double Constant_Dt::calculate(const ms::math::Vector_Const_Wrapper characteristic_velocity_vec, const int cell_number) const
 {
   return this->constant_dt_;
 }

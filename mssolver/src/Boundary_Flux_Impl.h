@@ -12,15 +12,15 @@ public:
   Initial_Constant_BC(const std::shared_ptr<Numerical_Flux>& numerical_flux_function)
       : _numerical_flux(numerical_flux_function){};
 
-public: // Query
-  void calculate(double* bdry_flux_ptr, const ms::math::Vector_Const_Wrapper oc_solution_v, const ms::math::Vector_Const_Wrapper normal_v) const override;
+public:
+  void calculate(ms::math::Vector_Wrapper boundary_flux_vec, const ms::math::Vector_Const_Wrapper oc_solution_vec, const ms::math::Vector_Const_Wrapper normal_vec) const override;
 
 private:
   void calculate_neighbor_solution(const ms::math::Vector_Const_Wrapper& oc_solution_v) const;
 
 private:
-  mutable bool                    _is_initialized = false;
-  mutable ms::math::Vector<0>     _neighbor_solution_v;
+  mutable bool                    _is_initialized        = false;
+  mutable ms::math::Vector<0>     _neighbor_solution_vec = ms::math::Vector<0>::null_vector();
   std::shared_ptr<Numerical_Flux> _numerical_flux;
 };
 

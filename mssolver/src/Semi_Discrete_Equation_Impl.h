@@ -21,8 +21,9 @@ public:
   ms::math::Vector_Wrapper solution_vector(void) override;
 
 public:
-  double                         calculate_time_step(void) const override;
+  double                         calculate_allowable_time_step(void) const override;
   ms::math::Vector_Const_Wrapper const_residual_vector(void) const override;
+  void                           post_solution(const double time) const override;
   // ms::math::Vector<>             copy_solution_vector(void) const override;
   // ms::math::Vector_Const_Wrapper const_RHS_vector(void) const override;
   // ms::math::Vector<>             copy_RHS_vector(void) const override;
@@ -31,6 +32,7 @@ private:
   ms::math::Vector_Wrapper residual_vector(const int cell_index);
 
 private:
+  int                                   _dimension;
   Discrete_Solution_FVM                 _solution;
   std::vector<double>                   _residual;
   std::unique_ptr<Time_Step_Calculator> _time_step_calculator_ptr;

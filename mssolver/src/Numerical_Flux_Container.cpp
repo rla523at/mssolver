@@ -24,18 +24,16 @@ void Numerical_Flux_Container::create_and_store(const std::string_view KEY, cons
     {
       THIS::_container.emplace(KEY, std::make_shared<Godunov_Flux_Linear_Advection>(Governing_Equation_Container::get_linear_advection(problem_data)));
     }
-
-    return std::make_shared<LLF>(governing_equation);
   }
   else if (ms::string::contain(KEY, "UNSTABLE"))
   {
+    THIS::_container.emplace(KEY, std::make_shared<Unstable_Flux>(Governing_Equation_Container::get(problem_data)));
   }
-  else if (ms::string::contain(KEY, "LAX", "FRIDRICHS"))
-  {
-  }
+  // else if (ms::string::contain(KEY, "LAX", "FRIDRICHS"))
+  //{
+  // }
   else
   {
-    EXCEPTION("numerical flux in configuration file is not supported");
-    return nullptr;
+    EXCEPTION(std::string(KEY) + " is not supported numerical flux");
   }
 }

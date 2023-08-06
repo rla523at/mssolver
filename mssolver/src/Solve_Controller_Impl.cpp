@@ -10,7 +10,7 @@ bool Solve_End_Controller_By_Time::is_need_to_control_time_step(const double cur
   return this->end_time_ < expect_time;
 }
 
-bool Solve_End_Controller_By_Time::is_time_to_end(const size_t current_iter, const double current_time) const
+bool Solve_End_Controller_By_Time::is_time_to_end(const int current_iter, const double current_time) const
 {
   return current_time == this->end_time_;
 }
@@ -20,19 +20,30 @@ void Solve_End_Controller_By_Time::control_time_step(const double current_time, 
   time_step = this->end_time_ - current_time;
 }
 
-std::string Solve_End_Controller_By_Time::progress_percentage_str(const size_t current_iter, const double current_time) const
+std::string Solve_End_Controller_By_Time::progress_percentage_str(const int current_iter, const double current_time) const
 {
   std::ostringstream oss;
   oss << std::setprecision(2) << std::fixed << current_time * 100 / this->end_time_ << "%";
   return oss.str();
 }
 
+/*
+
+
+
+
+
+
+
+
+*/
+
 bool Solve_End_Controller_By_Iter::is_need_to_control_time_step(const double current_time, const double time_step) const
 {
   return false;
 }
 
-bool Solve_End_Controller_By_Iter::is_time_to_end(const size_t current_iter, const double current_time) const
+bool Solve_End_Controller_By_Iter::is_time_to_end(const int current_iter, const double current_time) const
 {
   return current_iter == this->end_iter_;
 }
@@ -43,103 +54,114 @@ void Solve_End_Controller_By_Iter::control_time_step(const double current_time, 
   return;
 }
 
-std::string Solve_End_Controller_By_Iter::progress_percentage_str(const size_t current_iter, const double current_time) const
+std::string Solve_End_Controller_By_Iter::progress_percentage_str(const int current_iter, const double current_time) const
 {
   std::ostringstream oss;
   oss << std::setprecision(2) << std::fixed << current_iter * 100 / this->end_iter_ << "%";
   return oss.str();
 }
 
-//Solve_Post_Controller_By_Time::Solve_Post_Controller_By_Time(const double post_time_step)
-//    : post_time_step_(post_time_step)
-//{
-//  this->update_post_time();
-//};
-//
-//void Solve_Post_Controller_By_Time::increase_num_post(void)
-//{
-//  this->num_post_++;
-//  this->update_post_time();
-//}
-//
-//bool Solve_Post_Controller_By_Time::is_need_to_control_time_step(const double current_time, const double time_step) const
-//{
-//  const auto expect_time = current_time + time_step;
-//  return this->post_time_ < expect_time;
-//}
-//
-//bool Solve_Post_Controller_By_Time::is_time_to_post(const size_t current_iter, const double current_time) const
-//{
-//  return current_time == this->post_time_;
-//}
-//
-//void Solve_Post_Controller_By_Time::control_time_step(const double current_time, double& time_step) const
-//{
-//  time_step = this->post_time_ - current_time;
-//}
-//
-//void Solve_Post_Controller_By_Time::update_post_time(void)
-//{
-//  this->post_time_ = (this->num_post_ + 1) * this->post_time_step_;
-//}
-//
-//Solve_Post_Controller_By_Iter::Solve_Post_Controller_By_Iter(const size_t post_iter_unit)
-//    : post_iter_unit_(post_iter_unit)
-//{
-//  this->update_post_iter();
-//};
-//
-//void Solve_Post_Controller_By_Iter::increase_num_post(void)
-//{
-//  this->num_post_++;
-//  this->update_post_iter();
-//}
-//
-//bool Solve_Post_Controller_By_Iter::is_need_to_control_time_step(const double current_time, const double time_step) const
-//{
-//  return false;
-//}
-//
-//bool Solve_Post_Controller_By_Iter::is_time_to_post(const size_t current_iter, const double current_time) const
-//{
-//  return current_iter == this->post_iter_;
-//}
-//
-//void Solve_Post_Controller_By_Iter::control_time_step(const double current_time, double& time_step) const
-//{
-//  EXCEPTION("controller by iter never controll time step");
-//  return;
-//}
-//
-//void Solve_Post_Controller_By_Iter::update_post_iter(void)
-//{
-//  this->post_iter_ = (this->num_post_ + 1) * this->post_iter_unit_;
-//}
+/*
 
-//std::unique_ptr<Solve_Post_Controller> Solve_Post_Controller_Factory::make_unique(const Configuration& configuration)
-//{
-//  const auto& type_name = configuration.get_solve_post_controller_type();
-//  if (ms::contains_icase(type_name, "NotUse"))
-//  {
-//    return std::make_unique<Solve_Post_Controller_Not_Use>();
-//  }
-//  else if (ms::contains_icase(type_name, "Initial_Final"))
-//  {
-//    return std::make_unique<Solve_Post_Controller_Inital_Final>();
-//  }
-//  else if (ms::contains_icase(type_name, "Time"))
-//  {
-//    const auto post_time_step = configuration.solve_post_time_step();
-//    return std::make_unique<Solve_Post_Controller_By_Time>(post_time_step);
-//  }
-//  else if (ms::contains_icase(type_name, "Iter"))
-//  {
-//    const auto post_iter_unit = configuration.solve_post_iter_unit();
-//    return std::make_unique<Solve_Post_Controller_By_Iter>(post_iter_unit);
-//  }
-//  else
-//  {
-//    EXCEPTION("solve_end_controller_type in configuration file does not supported");
-//    return nullptr;
-//  }
-//}
+
+
+
+
+
+
+
+*/
+
+Solve_Post_Controller_By_Time::Solve_Post_Controller_By_Time(const double post_time_unit, const bool is_post_initial, const bool is_post_final)
+    : _post_time_unit(post_time_unit),
+      _is_post_initiali_solution(is_post_initial),
+      _is_post_final_solution(is_post_final)
+{
+  this->update_post_time();
+};
+
+void Solve_Post_Controller_By_Time::control_time_step(const double current_time, double& time_step) const
+{
+  time_step = this->_post_time - current_time;
+}
+
+bool Solve_Post_Controller_By_Time::is_need_to_control_time_step(const double current_time, const double time_step) const
+{
+  const auto expect_time = current_time + time_step;
+  return this->_post_time < expect_time;
+}
+
+bool Solve_Post_Controller_By_Time::is_time_to_post(const int current_iter, const double current_time) const
+{
+  if (current_time == this->_post_time)
+  {
+    this->update_post_time();
+    return true;
+  }
+}
+
+bool Solve_Post_Controller_By_Time::is_post_initial_solution(void) const
+{
+  return this->_is_post_initiali_solution;
+};
+
+bool Solve_Post_Controller_By_Time::is_post_final_solution(void) const
+{
+  return this->_is_post_final_solution;
+};
+
+void Solve_Post_Controller_By_Time::update_post_time(void) const
+{
+  this->_post_time += this->_post_time_unit;
+}
+
+/*
+
+
+
+
+
+
+
+
+*/
+
+Solve_Post_Controller_By_Iter::Solve_Post_Controller_By_Iter(const int post_iter_unit, const bool is_post_initial, const bool is_post_final)
+    : _post_iter_unit(post_iter_unit),
+      _is_post_initiali_solution(is_post_initial),
+      _is_post_final_solution(is_post_final)
+{
+  this->update_post_iter();
+};
+
+void Solve_Post_Controller_By_Iter::control_time_step(const double current_time, double& time_step) const
+{
+  EXCEPTION("controller by iter never controll time step");
+  return;
+}
+
+bool Solve_Post_Controller_By_Iter::is_time_to_post(const int current_iter, const double current_time) const
+{
+  if (current_iter == this->_post_iter)
+  {
+    this->update_post_iter();
+    return true;
+  }
+}
+
+bool Solve_Post_Controller_By_Iter::is_need_to_control_time_step(const double current_time, const double time_step) const { return false; }
+
+bool Solve_Post_Controller_By_Iter::is_post_initial_solution(void) const
+{
+  return this->_is_post_initiali_solution;
+};
+
+bool Solve_Post_Controller_By_Iter::is_post_final_solution(void) const
+{
+  return this->_is_post_final_solution;
+};
+
+void Solve_Post_Controller_By_Iter::update_post_iter(void) const
+{
+  this->_post_iter += this->_post_iter_unit;
+}

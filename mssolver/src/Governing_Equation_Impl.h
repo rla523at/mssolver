@@ -5,9 +5,14 @@
 class Linear_Advection : public Governing_Equation
 {
 public:
-  void cal_characteristic_speed(double* characteristic_speed, const ms::math::Vector_Const_Wrapper solution) const override;
-  void cal_flux(ms::math::Matrix& flux, const ms::math::Vector_Const_Wrapper solution) const override;
+  Linear_Advection(const double* advection_velocity, const int dimension)
+      : _advection_velocity_values(advection_velocity, advection_velocity + dimension){};
+
+public:
+  void cal_characteristic_velocity_vector(ms::math::Vector_Wrapper characteristic_velocity_vec, const ms::math::Vector_Const_Wrapper solution) const override;
+  void cal_flux(ms::math::Matrix_Wrapper flux, const ms::math::Vector_Const_Wrapper solution) const override;
   int  dimension(void) const override;
+  void extend_solution(ms::math::Vector_Wrapper extended_solution, const ms::math::Vector_Const_Wrapper equation_solution) const override;
   void solution_names(std::string* names) const override;
   int  num_equations(void) const override;
   int  num_extended_solutions(void) const override;
@@ -16,15 +21,7 @@ public:
   ms::math::Vector_Const_Wrapper advection_velocity_vector(void) const;
 
 private:
-  std::vector<double> _advection_velocity;
-
-private:
-  Linear_Advection(const double* advection_velocity, const int dimension)
-      : _advection_velocity(advection_velocity, advection_velocity + dimension){};
-
-private:
-  class Governing_Equation_Container;
-  friend Governing_Equation_Container;
+  std::vector<double> _advection_velocity_values;
 };
 
 //

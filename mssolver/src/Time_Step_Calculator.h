@@ -6,5 +6,8 @@
 class Time_Step_Calculator
 {
 public:
-  virtual double calculate(const double* characteristic_velocity, const int cell_number) const = 0;
+  virtual ~Time_Step_Calculator(void) = default;
+
+public:
+  virtual double calculate(const ms::math::Vector_Const_Wrapper characteristic_velocity_vec, const int cell_number) const = 0;
 };

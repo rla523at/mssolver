@@ -6,15 +6,16 @@
 class Governing_Equation
 {
 public:
-  virtual void cal_characteristic_speed(double* characteristic_speed, const ms::math::Vector_Const_Wrapper solution) const = 0;
-  virtual void cal_flux(ms::math::Matrix& flux, const ms::math::Vector_Const_Wrapper solution) const                       = 0;
-  virtual int  dimension(void) const                                                                                       = 0;
-  virtual void solution_names(std::string* names) const                                                                    = 0;
-  virtual int  num_equations(void) const                                                                                   = 0;
-  virtual int  num_extended_solutions(void) const                                                                          = 0;
+  virtual void cal_characteristic_velocity_vector(ms::math::Vector_Wrapper characteristic_velocity_vec, const ms::math::Vector_Const_Wrapper solution) const = 0;
+  virtual void cal_flux(ms::math::Matrix_Wrapper flux, const ms::math::Vector_Const_Wrapper solution) const                                                  = 0;
+  virtual int  dimension(void) const                                                                                                                         = 0;
+  virtual void extend_solution(ms::math::Vector_Wrapper extended_solution, const ms::math::Vector_Const_Wrapper equation_solution) const                     = 0;
+  virtual void solution_names(std::string* names) const                                                                                                      = 0;
+  virtual int  num_equations(void) const                                                                                                                     = 0;
+  virtual int  num_extended_solutions(void) const                                                                                                            = 0;
 
 protected:
-  ~Governing_Equation(void) = default;
+  virtual ~Governing_Equation(void) = default;
 };
 
 // enum class Governing_Equation_Type

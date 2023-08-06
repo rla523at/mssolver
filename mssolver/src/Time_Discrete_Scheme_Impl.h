@@ -7,14 +7,6 @@ class Euler_Explicit : public Time_Discrete_Scheme
 {
 public:
   void update(Semi_Discrete_Equation& semi_discrete_equation, const double time_step) const override;
-
-private:
-  friend Time_Discrete_Scheme_Container;
-
-private:
-  // Time_Discrete_Scheme objects can be created only once in the Container class.
-  // To prevent unnecessary creation, acess to the constructor has been blocked
-  Euler_Explicit(void) = default;
 };
 
 //class SSPRK33 : public Time_Discrete_Scheme

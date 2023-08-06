@@ -16,59 +16,35 @@ Discrete_Equation::Discrete_Equation(const ms::config::Data& problem_data, const
   this->_time_discrete_scheme   = Time_Discrete_Scheme_Container::get(time_data);
 }
 
+Discrete_Equation ::~Discrete_Equation(void) = default;
+
+
 void Discrete_Equation::solve(const ms::config::Data& solve_option_data)
 {
-  const auto& solve_end_option = solve_option_data.get_data<ms::config::Data>("End");
-
-  const auto& end_controller = Solve_End_Controller_Container::get(solve_end_option);
-
-  // ms::tecplot을 활용한 POST class 만들기~
-  // 
+  const auto& solve_end_option  = solve_option_data.get_data<ms::config::Data>("End");
+  const auto& solve_post_option = solve_option_data.get_data<ms::config::Data>("POST");
+  const auto& end_controller    = Solve_End_Controller_Container::get(solve_end_option);
+  const auto& post_controller   = Solve_Post_Controller_Container::get(solve_post_option);
 
   auto current_iter = 0;
   auto current_time = 0.0;
   // Post_Processor::syncronize_solution_time(this->current_time_);
-  // Post_Processor::post_grid();
 
-  // if (this->post_controller_->is_post_initial_solution())
-  //{
-  // Post_Processor::record_solution();
-  // Post_Processor::post_solution("initial");
-  //}
-
-  while (true)
+  if (post_controller.is_post_initial_solution())
   {
-    if (end_controller.is_time_to_end(current_iter, current_time))
-    {
-      if (this->post_controller_->is_post_final_solution())
-      {
-        Post_Processor::record_solution();
-        Post_Processor::post_solution("final");
-      }
-      break;
-    }
+    this->_semi_discrete_equation->post_solution(current_time);
+  }
 
-    // if (this->post_controller_->is_time_to_post(current_iter, this->current_time_))
-    //{
-    //   Post_Processor::record_solution();
-    //   Post_Processor::post_solution();
-    //   this->post_controller_->increase_num_post();
-    // }
+  while (!end_controller.is_time_to_end(current_iter, current_time))
+  {
+    if (post_controller.is_time_to_post(current_iter, current_time))
+    {
+      this->_semi_discrete_equation->post_solution(current_time);
+    }
 
     // Profiler::set_time_point();
 
-    auto time_step = this->_semi_discrete_equation->calculate_time_step();
-    if (end_controller.is_need_to_control_time_step(current_time, time_step))
-    {
-      end_controller.control_time_step(current_time, time_step);
-      return;
-    }
-
-    // if (this->post_controller_->is_need_to_controll_time_step(current_time, time_step))
-    //{
-    //   this->post_controller_->controll_time_step(current_time, time_step);
-    // }
-
+    const auto time_step = this->calculate_time_step(end_controller, post_controller, current_time);
     this->_time_discrete_scheme->update(*this->_semi_discrete_equation, time_step);
 
     current_time += time_step;
@@ -79,4 +55,25 @@ void Discrete_Equation::solve(const ms::config::Data& solve_option_data)
     // LOG << std::setw(25) << "Time:" + std::to_string(this->current_time_) + "(" + end_controller.progress_percentage_str(current_iter, this->current_time_) + ")";
     // LOG << std::setw(25) << "Computation cost:" + std::to_string(Profiler::get_time_duration()) + "s \n"        << LOG.print_;
   }
+
+  if (post_controller.is_post_final_solution())
+  {
+    this->_semi_discrete_equation->post_solution(current_time);
+  }
 }
+
+double Discrete_Equation::calculate_time_step(const Solve_End_Controller& end_controller, const Solve_Post_Controller& post_controller, const double current_time) const
+{
+  auto allowable_time_step = this->_semi_discrete_equation->calculate_allowable_time_step();
+  if (end_controller.is_need_to_control_time_step(current_time, allowable_time_step))
+  {
+    end_controller.control_time_step(current_time, allowable_time_step);
+  }
+
+  if (post_controller.is_need_to_control_time_step(current_time, allowable_time_step))
+  {
+    post_controller.control_time_step(current_time, allowable_time_step);
+  }
+
+  return allowable_time_step;
+ }
