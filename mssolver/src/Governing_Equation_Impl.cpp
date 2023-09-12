@@ -2,7 +2,7 @@
 
 #include "msexception/Exception.h"
 
-void Linear_Advection::cal_characteristic_velocity_vector(ms::math::Vector_Wrapper characteristic_velocity_vec, const ms::math::Vector_Const_Wrapper solution) const
+void Linear_Advection::cal_characteristic_velocity_vector(ms::math::Vector_Wrap characteristic_velocity_vec, const ms::math::Vector_View solution) const
 {
   const auto dim = this->dimension();
   REQUIRE(characteristic_velocity_vec.dimension() == dim, "dimension should be mathced");
@@ -13,7 +13,7 @@ void Linear_Advection::cal_characteristic_velocity_vector(ms::math::Vector_Wrapp
   }
 }
 
-void Linear_Advection::cal_flux(ms::math::Matrix_Wrapper flux, const ms::math::Vector_Const_Wrapper solution) const
+void Linear_Advection::cal_flux(ms::math::Matrix_Wrap flux, const ms::math::Vector_View solution) const
 {
   const auto dim = this->dimension();
   REQUIRE(flux.num_columns() == dim, "dimensino should be matched");
@@ -24,32 +24,62 @@ void Linear_Advection::cal_flux(ms::math::Matrix_Wrapper flux, const ms::math::V
   }
 }
 
+void Linear_Advection::conservative_solution_names(std::string* names) const
+{
+  names[0] = "q";
+}
+
 int Linear_Advection::dimension(void) const
 {
   return static_cast<int>(this->_advection_velocity_values.size());
 }
 
-void Linear_Advection::extend_solution(ms::math::Vector_Wrapper extended_solution, const ms::math::Vector_Const_Wrapper equation_solution) const
-{
-  extended_solution[0] = equation_solution[0];
-}
-
-void Linear_Advection::solution_names(std::string* names) const
+void Linear_Advection::extended_solution_names(std::string* names) const
 {
   names[0] = "q";
 }
 
-int Linear_Advection::num_equations(void) const
+inline int Linear_Advection::num_equations(void) const
 {
   return 1;
 }
 
-int Linear_Advection::num_extended_solutions(void) const
+inline int Linear_Advection::num_conservative_solutions(void) const
 {
   return 1;
 }
 
-ms::math::Vector_Const_Wrapper Linear_Advection::advection_velocity_vector(void) const
+inline int Linear_Advection::num_extended_solutions(void) const
+{
+  return 1;
+}
+
+inline int Linear_Advection::num_primitive_solutions(void) const
+{
+  return 1;
+}
+
+void Linear_Advection::primitive_solution_names(std::string* names) const
+{
+  names[0] = "q";
+}
+
+void Linear_Advection::to_conservative_solution(ms::math::Vector_Wrap conservative_solution, const ms::math::Vector_View equation_solution) const
+{
+  conservative_solution[0] = equation_solution[0];
+}
+
+void Linear_Advection::to_extended_solution(ms::math::Vector_Wrap extended_solution, const ms::math::Vector_View equation_solution) const
+{
+  extended_solution[0] = equation_solution[0];
+}
+
+void Linear_Advection::to_primitive_solution(ms::math::Vector_Wrap primitive_solution, const ms::math::Vector_View equation_solution) const
+{
+  primitive_solution[0] = equation_solution[0];
+}
+
+ms::math::Vector_View Linear_Advection::advection_velocity_vector(void) const
 {
   return this->_advection_velocity_values;
 }

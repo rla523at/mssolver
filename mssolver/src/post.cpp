@@ -3,35 +3,100 @@
 #include "Discrete_Solution_FVM.h"
 #include "Governing_Equation.h"
 #include "Governing_Equation_Container.h"
+#include "Solution_At_Location.h"
+#include "Solution_At_Location_Container.h"
+#include "Solution_Type_Transformer.h"
+#include "Solution_Type_Transformer_Container.h"
 #include "msexception/Exception.h"
 #include "msstring/string.h"
 #include "mstecplot/Writer.h"
 
 void Post::initialize(const ms::config::Data& problem_data, const ms::config::Data& post_data)
 {
-  // initialize from problem data
-  const auto gov_eq_ptr             = Governing_Equation_Container::get(problem_data);
-  const auto num_extended_solutions = gov_eq_ptr->num_extended_solutions();
-  THIS::_variable_strs.resize(num_extended_solutions);
+  // initialize post solution
+  const auto& solution_data = post_data.get_data<ms::config::Data>("SOLUTION");
+  const auto& type          = solution_data.get_data<std::string>("TYPE");
+  const auto& display_type  = solution_data.get_data<std::string>("DISPLAY_TYPE");
+  const auto& location      = solution_data.get_data<std::string>("LOCATION");
 
-  gov_eq_ptr->solution_names(THIS::_variable_strs.data());
+  const auto TYPE         = ms::string::upper_case(type);
+  const auto DISPLAY_TYPE = ms::string::upper_case(display_type);
+  const auto LOCATION     = ms::string::upper_case(location);
 
-  // initalize from post data
+  const auto gov_eq_sptr = Governing_Equation_Container::get(problem_data);
+
+  auto num_variables = 0;
+  if (TYPE == "CONSERVATIVE")
+  {
+    num_variables = gov_eq_sptr->num_conservative_solutions();
+    THIS::_variable_strs.resize(num_variables);
+    gov_eq_sptr->conservative_solution_names(THIS::_variable_strs.data());
+  }
+  else if (TYPE == "PRIMITIVE")
+  {
+    num_variables = gov_eq_sptr->num_primitive_solutions();
+    THIS::_variable_strs.resize(num_variables);
+    gov_eq_sptr->primitive_solution_names(THIS::_variable_strs.data());
+  }
+  else if (TYPE == "EXTENDED")
+  {
+    num_variables = gov_eq_sptr->num_extended_solutions();
+    THIS::_variable_strs.resize(num_variables);
+    gov_eq_sptr->extended_solution_names(THIS::_variable_strs.data());
+  }
+  else
+  {
+    EXCEPTION(std::string(type) + " is not supported solution type");
+  }
+
+  if (DISPLAY_TYPE == "CONTINUOUS")
+  {
+    REQUIRE(ms::string::compare_icase(location, "CENTER"), "Continuous display type is only supported at center");
+    THIS::_is_continuous_display_type = true;
+    THIS::_var_locations.resize(num_variables, ms::tecplot::Variable_Location::CELL_CENTER);
+  }
+  else if (DISPLAY_TYPE == "DISCRETE")
+  {
+    THIS::_is_continuous_display_type = false;
+
+    if (LOCATION == "CENTER")
+    {
+      THIS::_var_locations.resize(num_variables, ms::tecplot::Variable_Location::CELL_CENTER);
+    }
+    else if (LOCATION == "NODE")
+    {
+      THIS::_var_locations.resize(num_variables, ms::tecplot::Variable_Location::NODE);
+    }
+    else
+    {
+      EXCEPTION(location + " is not supproted variable location");
+    }
+  }
+  else
+  {
+    EXCEPTION(display_type + " is not supproted variable display type");
+  }
+
+  THIS::_solution_at_location_sptr      = Solution_At_Location_Container::get_sptr(location);
+  THIS::_solution_type_transformer_sptr = Solution_Type_Transformer_Container::get_sptr(type, gov_eq_sptr);
+  THIS::_partition_order                = post_data.get_data<int>("PARTITION_ORDER");
+
+  // set tecplot configuration
   const auto& format      = post_data.get_data<std::string>("Format");
   const auto& folder_path = post_data.get_data<std::string>("folder_path");
   const auto& title       = post_data.get_data<std::string>("title");
-  THIS::_partition_order  = post_data.get_data<int>("partition_order");
-  const auto& sol_loc     = post_data.get_data<std::string>("SOLUTION_LOCATION");
 
   ms::tecplot::Configuration config;
 
-  if (ms::string::compare_icase(format, "ASCII"))
+  const auto FORMAT = ms::string::upper_case(format);
+
+  if (FORMAT == "ASCII")
   {
-    config.file_fomrat = ms::tecplot::File_Format::ASCII;
+    config.file_format = ms::tecplot::File_Format::ASCII;
   }
-  else if (ms::string::compare_icase(format, "BINARY"))
+  else if (FORMAT == "BINARY")
   {
-    config.file_fomrat = ms::tecplot::File_Format::Binary;
+    config.file_format = ms::tecplot::File_Format::Binary;
   }
   else
   {
@@ -43,21 +108,6 @@ void Post::initialize(const ms::config::Data& problem_data, const ms::config::Da
 
   ms::tecplot::Writer::set_configuration(std::move(config));
 
-  if (ms::string::compare_icase(sol_loc, "CENTER"))
-  {
-    THIS::_is_solution_location_center = true;
-    THIS::_var_locations.resize(num_extended_solutions, ms::tecplot::Variable_Location::CELL_CENTER);
-  }
-  else if (ms::string::compare_icase(sol_loc, "NODE"))
-  {
-    THIS::_is_solution_location_center = false;
-    THIS::_var_locations.resize(num_extended_solutions, ms::tecplot::Variable_Location::NODE);
-  }
-  else
-  {
-    EXCEPTION(sol_loc + " is not supproted solution location");
-  }
-
   THIS::_is_initialized = true;
 }
 
@@ -68,7 +118,7 @@ void Post::write_grid(const ms::grid::Grid& grid)
   const auto dim = grid.dimension();
 
   ms::geo::Partition_Data partition_data;
-  if (THIS::_is_solution_location_center)
+  if (THIS::_is_continuous_display_type)
   {
     partition_data = grid.make_partition_data(THIS::_partition_order);
   }
@@ -98,18 +148,8 @@ void Post::write_grid(const ms::grid::Grid& grid)
 
 void Post::write_solution(const Discrete_Solution_FVM& solution, const double time)
 {
-  // make extended soltuions
-  const auto          num_cells             = solution.num_cells();
-  const auto          num_extended_soltuion = solution.num_extended_solution();
-  std::vector<double> values(num_extended_soltuion * num_cells);
+  const auto solution_values = THIS::_post_solution_maker_uptr->make_post_solution_values(solution);
 
-  const auto values_ptr = values.data();
-  for (int i = 0; i < num_cells; ++i)
-  {
-    ms::math::Vector_Wrapper extended_solution_vector(values_ptr + i, num_extended_soltuion, num_cells);
-    solution.extended_solution_vector(extended_solution_vector, i);
-  }
-
-  ms::tecplot::Solution_Data solution_data(values_ptr, time, THIS::_variable_strs, THIS::_var_locations.data());
-  ms::tecplot::Writer::write_solution_file(std::move(solution_data));
+  // ms::tecplot::Solution_Data solution_data(values_ptr, time, THIS::_variable_strs, THIS::_var_locations.data());
+  // ms::tecplot::Writer::write_solution_file(std::move(solution_data));
 }

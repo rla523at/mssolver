@@ -9,16 +9,22 @@ public:
       : _advection_velocity_values(advection_velocity, advection_velocity + dimension){};
 
 public:
-  void cal_characteristic_velocity_vector(ms::math::Vector_Wrapper characteristic_velocity_vec, const ms::math::Vector_Const_Wrapper solution) const override;
-  void cal_flux(ms::math::Matrix_Wrapper flux, const ms::math::Vector_Const_Wrapper solution) const override;
+  void cal_characteristic_velocity_vector(ms::math::Vector_Wrap characteristic_velocity_vec, const ms::math::Vector_View solution) const override;
+  void cal_flux(ms::math::Matrix_Wrap flux, const ms::math::Vector_View solution) const override;
+  void conservative_solution_names(std::string* names) const override;
   int  dimension(void) const override;
-  void extend_solution(ms::math::Vector_Wrapper extended_solution, const ms::math::Vector_Const_Wrapper equation_solution) const override;
-  void solution_names(std::string* names) const override;
+  void extended_solution_names(std::string* names) const override;
   int  num_equations(void) const override;
+  int  num_conservative_solutions(void) const override;
   int  num_extended_solutions(void) const override;
+  int  num_primitive_solutions(void) const override;
+  void primitive_solution_names(std::string* names) const override;
+  void to_conservative_solution(ms::math::Vector_Wrap conservative_solution, const ms::math::Vector_View equation_solution) const override;
+  void to_extended_solution(ms::math::Vector_Wrap extended_solution, const ms::math::Vector_View equation_solution) const override;
+  void to_primitive_solution(ms::math::Vector_Wrap primitive_solution, const ms::math::Vector_View equation_solution) const override;
 
 public:
-  ms::math::Vector_Const_Wrapper advection_velocity_vector(void) const;
+  ms::math::Vector_View advection_velocity_vector(void) const;
 
 private:
   std::vector<double> _advection_velocity_values;

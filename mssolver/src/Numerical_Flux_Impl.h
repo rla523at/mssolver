@@ -14,7 +14,7 @@ public:
       : _linear_advection(governing_equation){};
 
 public:
-  void calculate(ms::math::Vector_Wrapper numerical_flux_vec, const ms::math::Vector_Const_Wrapper oc_solution_vec, const ms::math::Vector_Const_Wrapper nc_solution_vec, const ms::math::Vector_Const_Wrapper normal_vec) override;
+  void calculate(ms::math::Vector_Wrap numerical_flux_vec, const ms::math::Vector_View oc_solution_vec, const ms::math::Vector_View nc_solution_vec, const ms::math::Vector_View normal_vec) override;
 
 private:
   std::shared_ptr<Linear_Advection> _linear_advection;
@@ -26,7 +26,7 @@ public:
   Unstable_Flux(const std::shared_ptr<Governing_Equation>& governing_equation);
 
 public:
-  void calculate(ms::math::Vector_Wrapper numerical_flux_vec, const ms::math::Vector_Const_Wrapper oc_solution_vec, const ms::math::Vector_Const_Wrapper nc_solution_vec, const ms::math::Vector_Const_Wrapper normal_vec) override;
+  void calculate(ms::math::Vector_Wrap numerical_flux_vec, const ms::math::Vector_View oc_solution_vec, const ms::math::Vector_View nc_solution_vec, const ms::math::Vector_View normal_vec) override;
 
 private:
   std::shared_ptr<Governing_Equation> _governing_equation_ptr;

@@ -13,10 +13,10 @@ public:
       : _numerical_flux(numerical_flux_function){};
 
 public:
-  void calculate(ms::math::Vector_Wrapper boundary_flux_vec, const ms::math::Vector_Const_Wrapper oc_solution_vec, const ms::math::Vector_Const_Wrapper normal_vec) const override;
+  void calculate(ms::math::Vector_Wrap boundary_flux_vec, const ms::math::Vector_View oc_solution_vec, const ms::math::Vector_View normal_vec) const override;
 
 private:
-  void calculate_neighbor_solution(const ms::math::Vector_Const_Wrapper& oc_solution_v) const;
+  void calculate_neighbor_solution(const ms::math::Vector_View& oc_solution_v) const;
 
 private:
   mutable bool                    _is_initialized        = false;

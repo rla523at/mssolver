@@ -46,6 +46,12 @@
     <Filter Include="소스 파일\Solve_Option">
       <UniqueIdentifier>{c9a2b52a-e8a2-4d2f-8e38-1773c2a164bc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Post">
+      <UniqueIdentifier>{783fd4c3-36f5-4f9e-9840-ec7c9addf509}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Post\Post_Solution_Maker">
+      <UniqueIdentifier>{6b50a3a9-7881-4320-b13a-32edb6f55489}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -108,8 +114,23 @@
     <ClCompile Include="src\Solve_Controller_Containercpp.cpp">
       <Filter>소스 파일\Solve_Option</Filter>
     </ClCompile>
-    <ClCompile Include="src\post.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="src\Post.cpp">
+      <Filter>소스 파일\Post</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Post_Solution_Maker.cpp">
+      <Filter>소스 파일\Post\Post_Solution_Maker</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Solution_At_Location_Impl.cpp">
+      <Filter>소스 파일\Post\Post_Solution_Maker</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Solution_Type_Transformer_Impl.cpp">
+      <Filter>소스 파일\Post\Post_Solution_Maker</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Solution_Type_Transformer_Container.cpp">
+      <Filter>소스 파일\Post\Post_Solution_Maker</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Solution_At_Location_Container.cpp">
+      <Filter>소스 파일\Post\Post_Solution_Maker</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -195,7 +216,28 @@
       <Filter>소스 파일\Solve_Option</Filter>
     </ClInclude>
     <ClInclude Include="src\Post.h">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\Post</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Post_Solution_Maker.h">
+      <Filter>소스 파일\Post\Post_Solution_Maker</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Solution_At_Location.h">
+      <Filter>소스 파일\Post\Post_Solution_Maker</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Solution_At_Location_Impl.h">
+      <Filter>소스 파일\Post\Post_Solution_Maker</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Solution_Type_Transformer.h">
+      <Filter>소스 파일\Post\Post_Solution_Maker</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Solution_Type_Transformer_Impl.h">
+      <Filter>소스 파일\Post\Post_Solution_Maker</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Solution_Type_Transformer_Container.h">
+      <Filter>소스 파일\Post\Post_Solution_Maker</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Solution_At_Location_Container.h">
+      <Filter>소스 파일\Post\Post_Solution_Maker</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

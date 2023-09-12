@@ -18,18 +18,18 @@ public:
   // std::vector<double>      calculate_error_norms(const ms::grid::Grid& grid, const double end_time) const override;
   //  void                     reconstruct(void) override;
   void                     update_residual(void) override;
-  ms::math::Vector_Wrapper solution_vector(void) override;
+  ms::math::Vector_Wrap solution_vector_view(void) override;
 
 public:
   double                         calculate_allowable_time_step(void) const override;
-  ms::math::Vector_Const_Wrapper const_residual_vector(void) const override;
+  ms::math::Vector_View const_residual_vector(void) const override;
   void                           post_solution(const double time) const override;
   // ms::math::Vector<>             copy_solution_vector(void) const override;
-  // ms::math::Vector_Const_Wrapper const_RHS_vector(void) const override;
+  // ms::math::Vector_View const_RHS_vector(void) const override;
   // ms::math::Vector<>             copy_RHS_vector(void) const override;
 
 private:
-  ms::math::Vector_Wrapper residual_vector(const int cell_index);
+  ms::math::Vector_Wrap residual_vector(const int cell_index);
 
 private:
   int                                   _dimension;

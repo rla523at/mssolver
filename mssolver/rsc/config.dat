@@ -63,6 +63,13 @@ POST_OPTION
     FORMAT              : "ASCII"
     PATH                : "result/"
     TITLE               : "test"
+
+    SOLUTION
+    {
+        TYPE           : "CONSERVATIVE"
+        DISPLAY_TYPE   : "CONTINUOUS"
+        LOCATION       : "CENTER"
+    }
+
     PARTITION_ORDER     : 0
-    SOLUTION_LOCATION   : "CENTER"
 }

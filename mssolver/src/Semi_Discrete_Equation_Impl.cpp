@@ -84,9 +84,9 @@ Semi_Discrete_Equation_FVM::Semi_Discrete_Equation_FVM(const ms::config::Data& p
   }
 }
 
-ms::math::Vector_Wrapper Semi_Discrete_Equation_FVM::solution_vector(void)
+ms::math::Vector_Wrap Semi_Discrete_Equation_FVM::solution_vector_view(void)
 {
-  return this->_solution.solution_vector();
+  return this->_solution.solution_vector_view();
 }
 
 void Semi_Discrete_Equation_FVM::update_residual(void)
@@ -101,7 +101,7 @@ void Semi_Discrete_Equation_FVM::update_residual(void)
     const auto  volume          = this->_bdry_index_to_volume[i];
     const auto& normal_vec      = this->_bdry_index_to_normal[i];
     const auto  oc_number       = this->_bdry_index_to_oc_number[i];
-    const auto  oc_solution_vec = this->_solution.solution_vector(oc_number);
+    const auto  oc_solution_vec = this->_solution.solution_vector_view(oc_number);
     auto        oc_residual_vec = this->residual_vector(oc_number);
 
     auto& boundary_flux_function = this->_bdry_index_to_flux_ptr[i];
@@ -118,8 +118,8 @@ void Semi_Discrete_Equation_FVM::update_residual(void)
     const auto& normal                = this->_infc_index_to_normal[i];
     const auto [oc_number, nc_number] = this->_infc_number_to_oc_nc_number_pair[i];
 
-    const auto oc_solution_v = this->_solution.solution_vector(oc_number);
-    const auto nc_solution_v = this->_solution.solution_vector(nc_number);
+    const auto oc_solution_v = this->_solution.solution_vector_view(oc_number);
+    const auto nc_solution_v = this->_solution.solution_vector_view(nc_number);
 
     this->_numerical_flux_ptr->calculate(flux.data(), oc_solution_v, nc_solution_v, normal);
 
@@ -156,7 +156,7 @@ double Semi_Discrete_Equation_FVM::calculate_allowable_time_step(void) const
   return time_step;
 }
 
-ms::math::Vector_Const_Wrapper Semi_Discrete_Equation_FVM::const_residual_vector(void) const
+ms::math::Vector_View Semi_Discrete_Equation_FVM::const_residual_vector(void) const
 {
   return this->_residual;
 }
@@ -166,9 +166,9 @@ void Semi_Discrete_Equation_FVM::post_solution(const double time) const
   Post::write_solution(this->_solution, time);
 }
 
-ms::math::Vector_Wrapper Semi_Discrete_Equation_FVM::residual_vector(const int cell_index)
+ms::math::Vector_Wrap Semi_Discrete_Equation_FVM::residual_vector(const int cell_index)
 {
   auto start_ptr   = _residual.data() + cell_index * this->_num_equations;
-  auto vec_wrapper = ms::math::Vector_Wrapper(start_ptr, this->_num_equations);
+  auto vec_wrapper = ms::math::Vector_Wrap(start_ptr, this->_num_equations);
   return vec_wrapper;
 }

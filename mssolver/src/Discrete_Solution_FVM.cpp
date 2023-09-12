@@ -27,30 +27,28 @@ Discrete_Solution_FVM::Discrete_Solution_FVM(const ms::config::Data& problem_dat
   }
 }
 
-ms::math::Vector_Wrapper Discrete_Solution_FVM::solution_vector(void)
+ms::math::Vector_Wrap Discrete_Solution_FVM::solution_vector_view(void)
 {
   return _solution_values;
 }
 
-void Discrete_Solution_FVM::cal_characteristic_velocity(ms::math::Vector_Wrapper characteristic_velocity_vec, const int cell_number) const
+void Discrete_Solution_FVM::cal_characteristic_velocity(ms::math::Vector_Wrap characteristic_velocity_vec, const int cell_number) const
 {
-  const auto sol = this->solution_vector(cell_number);
+  const auto sol = this->solution_vector_view(cell_number);
   this->_governing_equation->cal_characteristic_velocity_vector(characteristic_velocity_vec, sol);
 }
 
-ms::math::Vector_Const_Wrapper Discrete_Solution_FVM::solution_vector(const int cell_number) const
+ms::math::Vector_View Discrete_Solution_FVM::solution_vector_view(const int cell_number) const
 {
-  const auto num_sols     = this->_governing_equation->num_equations();
-  const auto jump         = cell_number * num_sols;
-  const auto solution_ptr = this->_solution_values.data() + jump;
-
-  const auto solution = ms::math::Vector_Const_Wrapper(solution_ptr, num_sols);
-  return solution;
+  const auto solution_values_part = this->solution_values_part(cell_number);
+  const auto solution_vector_view = ms::math::Vector_View(solution_values_part);
+  return solution_vector_view;
 }
 
-void Discrete_Solution_FVM::extended_solution_vector(ms::math::Vector_Wrapper extended_solution, const int cell_number) const
+void Discrete_Solution_FVM::center_extended_solution(ms::math::Vector_Wrap extended_solution, const int cell_number) const
 {
-  this->_governing_equation->extend_solution(extended_solution, this->solution_vector(cell_number));
+  // extended_solution : conservative solution + primitive solution
+  this->_governing_equation->to_extend_solution(extended_solution, this->solution_vector_view(cell_number));
 }
 
 int Discrete_Solution_FVM::num_cells(void) const
@@ -66,4 +64,15 @@ int Discrete_Solution_FVM::num_DOF(void) const
 int Discrete_Solution_FVM::num_extended_solution(void) const
 {
   return this->_governing_equation->num_extended_solutions();
-  }
+}
+
+std::span<const double> Discrete_Solution_FVM::solution_values_part(const int cell_number) const
+{
+  const auto num_sols = this->_governing_equation->num_equations();
+
+  const auto start_index = cell_number * num_sols;
+  const auto num_values  = num_sols;
+
+  const auto solution_values_view = std::span<const double>(this->_solution_values);
+  return solution_values_view.subspan(start_index, num_values);
+}

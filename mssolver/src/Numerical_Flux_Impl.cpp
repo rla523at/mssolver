@@ -3,7 +3,7 @@
 #include "Governing_Equation_Impl.h"
 #include "msmath/BLAS.h"
 
-void Godunov_Flux_Linear_Advection::calculate(ms::math::Vector_Wrapper numerical_flux_vec, const ms::math::Vector_Const_Wrapper oc_solution_vec, const ms::math::Vector_Const_Wrapper nc_solution_vec, const ms::math::Vector_Const_Wrapper normal_vec)
+void Godunov_Flux_Linear_Advection::calculate(ms::math::Vector_Wrap numerical_flux_vec, const ms::math::Vector_View oc_solution_vec, const ms::math::Vector_View nc_solution_vec, const ms::math::Vector_View normal_vec)
 {
   const auto advection_velocity_vec = this->_linear_advection->advection_velocity_vector();
 
@@ -30,7 +30,7 @@ Unstable_Flux::Unstable_Flux(const std::shared_ptr<Governing_Equation>& governin
   this->_sum_flux.resize(dim, num_eqs);
 };
 
-void Unstable_Flux::calculate(ms::math::Vector_Wrapper numerical_flux_vec, const ms::math::Vector_Const_Wrapper oc_solution_vec, const ms::math::Vector_Const_Wrapper nc_solution_vec, const ms::math::Vector_Const_Wrapper normal_vec)
+void Unstable_Flux::calculate(ms::math::Vector_Wrap numerical_flux_vec, const ms::math::Vector_View oc_solution_vec, const ms::math::Vector_View nc_solution_vec, const ms::math::Vector_View normal_vec)
 {
   auto oc_flux_mat        = this->_owner_cell_physical_flux.wrapper();
   auto nc_flux_mat        = this->_neighbor_cell_physical_flux.wrapper();
