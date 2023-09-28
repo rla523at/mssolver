@@ -10,7 +10,8 @@ class Linear_Advection;
 class Governing_Equation_Container
 {
 public:
-  static std::shared_ptr<Governing_Equation> get(const ms::config::Data& problem_data);
+  static const Governing_Equation&           get(const ms::config::Data& problem_data);
+  static std::shared_ptr<Governing_Equation> get_sptr(const ms::config::Data& problem_data);
   static std::shared_ptr<Linear_Advection>   get_linear_advection(const ms::config::Data& problem_data);
 
 private:

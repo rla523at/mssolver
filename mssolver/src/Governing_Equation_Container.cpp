@@ -5,7 +5,12 @@
 
 // https://stackoverflow.com/questions/6795629/how-does-one-downcast-a-stdshared-ptr
 
-std::shared_ptr<Governing_Equation> Governing_Equation_Container::get(const ms::config::Data& problem_data)
+const Governing_Equation& Governing_Equation_Container::get(const ms::config::Data& problem_data)
+{
+  return *THIS::get_sptr(problem_data);
+}
+
+std::shared_ptr<Governing_Equation> Governing_Equation_Container::get_sptr(const ms::config::Data& problem_data)
 {
   const auto& governing_equation_name = problem_data.get_data<std::string>("governing_equation");
   const auto  KEY                     = ms::string::upper_case(governing_equation_name);

@@ -66,9 +66,9 @@ POST_OPTION
 
     SOLUTION
     {
-        TYPE           : "CONSERVATIVE"
-        DISPLAY_TYPE   : "CONTINUOUS"
-        LOCATION       : "CENTER"
+        VARIABLE_TYPE   : "CONSERVATIVE"
+        DISPLAY_TYPE    : "CONTINUOUS"
+        VALUE_TYPE      : "CENTER"
     }
 
     PARTITION_ORDER     : 0

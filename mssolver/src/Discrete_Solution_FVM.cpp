@@ -6,7 +6,7 @@
 #include "Initial_Condition_Container.h"
 
 Discrete_Solution_FVM::Discrete_Solution_FVM(const ms::config::Data& problem_data, const ms::grid::Grid& grid)
-    : _governing_equation(Governing_Equation_Container::get(problem_data))
+    : _governing_equation(Governing_Equation_Container::get_sptr(problem_data))
 {
   // make initial condition
   const auto& initial_condition = *Initial_Condition_Container::get(problem_data);

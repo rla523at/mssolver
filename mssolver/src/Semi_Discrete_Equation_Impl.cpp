@@ -14,7 +14,7 @@
 Semi_Discrete_Equation_FVM::Semi_Discrete_Equation_FVM(const ms::config::Data& problem_data, const ms::config::Data& discretization_data, const ms::grid::Grid& grid)
     : _solution(problem_data, grid)
 {
-  const auto& gov_eq   = *Governing_Equation_Container::get(problem_data);
+  const auto& gov_eq   = *Governing_Equation_Container::get_sptr(problem_data);
   this->_num_equations = gov_eq.num_equations();
 
   this->_residual.resize(this->_solution.num_DOF());

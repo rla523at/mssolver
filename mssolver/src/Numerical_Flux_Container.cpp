@@ -27,7 +27,7 @@ void Numerical_Flux_Container::create_and_store(const std::string_view KEY, cons
   }
   else if (ms::string::contain(KEY, "UNSTABLE"))
   {
-    THIS::_container.emplace(KEY, std::make_shared<Unstable_Flux>(Governing_Equation_Container::get(problem_data)));
+    THIS::_container.emplace(KEY, std::make_shared<Unstable_Flux>(Governing_Equation_Container::get_sptr(problem_data)));
   }
   // else if (ms::string::contain(KEY, "LAX", "FRIDRICHS"))
   //{

@@ -8,16 +8,16 @@ class Governing_Equation
 public:
   virtual void cal_characteristic_velocity_vector(ms::math::Vector_Wrap characteristic_velocity_vec, const ms::math::Vector_View solution) const = 0;
   virtual void cal_flux(ms::math::Matrix_Wrap flux, const ms::math::Vector_View solution) const                                                  = 0;
-  virtual void conservative_solution_names(std::string* names) const                                                                                           = 0;
-  virtual void extended_solution_names(std::string* names) const                                                                                               = 0;
-  virtual int  dimension(void) const                                                                                                                           = 0;
+  virtual void conservative_solution_names(std::string* names) const                                                                             = 0;
+  virtual void extended_solution_names(std::string* names) const                                                                                 = 0;
+  virtual int  dimension(void) const                                                                                                             = 0;
   virtual int  num_equations(void) const                                                                                                         = 0;
-  virtual int  num_conservative_solutions(void) const                                                                                                          = 0;
-  virtual int  num_extended_solutions(void) const                                                                                                          = 0;
-  virtual int  num_primitive_solutions(void) const                                                                                                          = 0;
-  virtual void primitive_solution_names(std::string* names) const                                                                                          = 0;
+  virtual int  num_conservative_solutions(void) const                                                                                            = 0;
+  virtual int  num_extended_solutions(void) const                                                                                                = 0;
+  virtual int  num_primitive_solutions(void) const                                                                                               = 0;
+  virtual void primitive_solution_names(std::string* names) const                                                                                = 0;
   virtual void to_conservative_solution(ms::math::Vector_Wrap conservative_solution, const ms::math::Vector_View equation_solution) const        = 0;
-  virtual void to_extended_solution(ms::math::Vector_Wrap extended_solution, const ms::math::Vector_View equation_solution) const                  = 0;
+  virtual void to_extended_solution(ms::math::Vector_Wrap extended_solution, const ms::math::Vector_View equation_solution) const                = 0;
   virtual void to_primitive_solution(ms::math::Vector_Wrap primitive_solution, const ms::math::Vector_View equation_solution) const              = 0;
 
 protected:

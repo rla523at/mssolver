@@ -15,43 +15,44 @@ void Post::initialize(const ms::config::Data& problem_data, const ms::config::Da
 {
   // initialize post solution
   const auto& solution_data = post_data.get_data<ms::config::Data>("SOLUTION");
-  const auto& type          = solution_data.get_data<std::string>("TYPE");
+  const auto& variable_type = solution_data.get_data<std::string>("VARIABLE_TYPE");
   const auto& display_type  = solution_data.get_data<std::string>("DISPLAY_TYPE");
-  const auto& location      = solution_data.get_data<std::string>("LOCATION");
+  const auto& value_type    = solution_data.get_data<std::string>("VALUE_TYPE");
 
-  const auto TYPE         = ms::string::upper_case(type);
-  const auto DISPLAY_TYPE = ms::string::upper_case(display_type);
-  const auto LOCATION     = ms::string::upper_case(location);
+  const auto VARIABLE_TYPE = ms::string::upper_case(variable_type);
+  const auto DISPLAY_TYPE  = ms::string::upper_case(display_type);
+  const auto VALUE_TYPE    = ms::string::upper_case(value_type);
 
-  const auto gov_eq_sptr = Governing_Equation_Container::get(problem_data);
+  const auto& governing_equation      = Governing_Equation_Container::get(problem_data);
+  const auto  governing_equation_sptr = Governing_Equation_Container::get_sptr(problem_data);
 
   auto num_variables = 0;
-  if (TYPE == "CONSERVATIVE")
+  if (VARIABLE_TYPE == "CONSERVATIVE")
   {
-    num_variables = gov_eq_sptr->num_conservative_solutions();
+    num_variables = governing_equation.num_conservative_solutions();
     THIS::_variable_strs.resize(num_variables);
-    gov_eq_sptr->conservative_solution_names(THIS::_variable_strs.data());
+    governing_equation.conservative_solution_names(THIS::_variable_strs.data());
   }
-  else if (TYPE == "PRIMITIVE")
+  else if (VARIABLE_TYPE == "PRIMITIVE")
   {
-    num_variables = gov_eq_sptr->num_primitive_solutions();
+    num_variables = governing_equation.num_primitive_solutions();
     THIS::_variable_strs.resize(num_variables);
-    gov_eq_sptr->primitive_solution_names(THIS::_variable_strs.data());
+    governing_equation.primitive_solution_names(THIS::_variable_strs.data());
   }
-  else if (TYPE == "EXTENDED")
+  else if (VARIABLE_TYPE == "EXTENDED")
   {
-    num_variables = gov_eq_sptr->num_extended_solutions();
+    num_variables = governing_equation.num_extended_solutions();
     THIS::_variable_strs.resize(num_variables);
-    gov_eq_sptr->extended_solution_names(THIS::_variable_strs.data());
+    governing_equation.extended_solution_names(THIS::_variable_strs.data());
   }
   else
   {
-    EXCEPTION(std::string(type) + " is not supported solution type");
+    EXCEPTION(variable_type + " is not supported solution type");
   }
 
   if (DISPLAY_TYPE == "CONTINUOUS")
   {
-    REQUIRE(ms::string::compare_icase(location, "CENTER"), "Continuous display type is only supported at center");
+    REQUIRE(VALUE_TYPE == "CENTER", "value type should be center when display type is continuous");
     THIS::_is_continuous_display_type = true;
     THIS::_var_locations.resize(num_variables, ms::tecplot::Variable_Location::CELL_CENTER);
   }
@@ -59,17 +60,17 @@ void Post::initialize(const ms::config::Data& problem_data, const ms::config::Da
   {
     THIS::_is_continuous_display_type = false;
 
-    if (LOCATION == "CENTER")
+    if (VALUE_TYPE == "CENTER")
     {
       THIS::_var_locations.resize(num_variables, ms::tecplot::Variable_Location::CELL_CENTER);
     }
-    else if (LOCATION == "NODE")
+    else if (VALUE_TYPE == "NODE")
     {
       THIS::_var_locations.resize(num_variables, ms::tecplot::Variable_Location::NODE);
     }
     else
     {
-      EXCEPTION(location + " is not supproted variable location");
+      EXCEPTION(value_type + " is not supproted variable location");
     }
   }
   else
@@ -77,8 +78,8 @@ void Post::initialize(const ms::config::Data& problem_data, const ms::config::Da
     EXCEPTION(display_type + " is not supproted variable display type");
   }
 
-  THIS::_solution_at_location_sptr      = Solution_At_Location_Container::get_sptr(location);
-  THIS::_solution_type_transformer_sptr = Solution_Type_Transformer_Container::get_sptr(type, gov_eq_sptr);
+  THIS::_solution_at_location_sptr      = Solution_At_Location_Container::get_sptr(value_type);
+  THIS::_solution_type_transformer_sptr = Solution_Type_Transformer_Container::get_sptr(variable_type, governing_equation_sptr);
   THIS::_partition_order                = post_data.get_data<int>("PARTITION_ORDER");
 
   // set tecplot configuration

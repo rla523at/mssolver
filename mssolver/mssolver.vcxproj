@@ -105,12 +105,12 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>D:\Code\mslib\_src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Code\mslib\_header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\Code\mslib\x64\Debug;D:\Code\mslib\_lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\Code\mslib\_lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>math_debug.lib;path_debug.lib;string_debug.lib;sym_debug.lib;tecplot_debug.lib;geo_debug.lib;mkl_core.lib;mkl_intel_lp64.lib;mkl_sequential.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
