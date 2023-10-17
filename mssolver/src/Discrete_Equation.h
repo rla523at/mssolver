@@ -10,7 +10,9 @@ class Solve_Post_Controller;
 class Discrete_Equation
 {
 public:
-  Discrete_Equation(const ms::config::Data& problem_data, const ms::config::Data& discretization_data, const ms::grid::Grid& grid);
+  Discrete_Equation(std::unique_ptr<Semi_Discrete_Equation>&& semi_discrete_equation, const std::shared_ptr<Time_Discrete_Scheme>& time_discrete_scheme)
+      : _semi_discrete_equation(std::move(semi_discrete_equation)),
+        _time_discrete_scheme(time_discrete_scheme){};
   ~Discrete_Equation(void); // to resolve pimpl with unique ptr issue
 
 public:

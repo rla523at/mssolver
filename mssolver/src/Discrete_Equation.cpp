@@ -2,22 +2,11 @@
 
 #include "Governing_Equation_Container.h"
 #include "Semi_Discrete_Equation.h"
-#include "Semi_Discrete_Equation_Factory.h"
 #include "Solve_Controller.h"
 #include "Solve_Controller_Container.h"
 #include "Time_Discrete_Scheme.h"
-#include "Time_Discrete_Scheme_Container.h"
-
-Discrete_Equation::Discrete_Equation(const ms::config::Data& problem_data, const ms::config::Data& discretization_data, const ms::grid::Grid& grid)
-{
-  const auto& time_data = discretization_data.get_data<ms::config::Data>("time");
-
-  this->_semi_discrete_equation = Semi_Discrete_Equation_Factory::make(problem_data, discretization_data, grid);
-  this->_time_discrete_scheme   = Time_Discrete_Scheme_Container::get(time_data);
-}
 
 Discrete_Equation ::~Discrete_Equation(void) = default;
-
 
 void Discrete_Equation::solve(const ms::config::Data& solve_option_data)
 {
@@ -76,4 +65,4 @@ double Discrete_Equation::calculate_time_step(const Solve_End_Controller& end_co
   }
 
   return allowable_time_step;
- }
+}

@@ -33,7 +33,7 @@ void Sine_Wave::calculate_solution(double* solution, const double* coordinates) 
   solution[0] = val;
 }
 //
-//Euclidean_Vector Square_Wave::calculate_solution(const Euclidean_Vector& space_vector) const
+// Euclidean_Vector Square_Wave::calculate_solution(const Euclidean_Vector& space_vector) const
 //{
 //  for (ushort i = 0; i < this->space_dimension_; ++i)
 //  {
@@ -45,13 +45,13 @@ void Sine_Wave::calculate_solution(double* solution, const double* coordinates) 
 //  return {1};
 //}
 //
-//Circle_Wave::Circle_Wave(const ushort space_dimension)
+// Circle_Wave::Circle_Wave(const ushort space_dimension)
 //    : space_dimension_(space_dimension)
 //{
 //  this->center_v_ = std::vector<double>(this->space_dimension_, 0.5);
 //};
 //
-//Euclidean_Vector Circle_Wave::calculate_solution(const Euclidean_Vector& space_vector) const
+// Euclidean_Vector Circle_Wave::calculate_solution(const Euclidean_Vector& space_vector) const
 //{
 //  constexpr auto shock_radius = 0.25;
 //
@@ -67,13 +67,13 @@ void Sine_Wave::calculate_solution(double* solution, const double* coordinates) 
 //  }
 //}
 //
-//Gaussian_Wave::Gaussian_Wave(const ushort space_dimension)
+// Gaussian_Wave::Gaussian_Wave(const ushort space_dimension)
 //    : space_dimension_(space_dimension)
 //{
 //  this->center_v_ = std::vector<double>(this->space_dimension_, 0.5);
 //};
 //
-//Euclidean_Vector Gaussian_Wave::calculate_solution(const Euclidean_Vector& point_v) const
+// Euclidean_Vector Gaussian_Wave::calculate_solution(const Euclidean_Vector& point_v) const
 //{
 //  constexpr auto beta              = 20.0;
 //  const auto     center_to_point_v = point_v - this->center_v_;
@@ -81,7 +81,7 @@ void Sine_Wave::calculate_solution(double* solution, const double* coordinates) 
 //  return {std::exp(-beta * center_to_point_v.inner_product(center_to_point_v))};
 //}
 //
-//Euclidean_Vector Euler_Shocktube_2D::primitive_to_conservative(const Euclidean_Vector& primitive_variable) const
+// Euclidean_Vector Euler_Shocktube_2D::primitive_to_conservative(const Euclidean_Vector& primitive_variable) const
 //{
 //  constexpr auto gamma = 1.4;
 //  constexpr auto c     = 1 / (gamma - 1);
@@ -98,7 +98,7 @@ void Sine_Wave::calculate_solution(double* solution, const double* coordinates) 
 //  return {rho, rhou, rhov, rhoE};
 //}
 //
-//Euclidean_Vector Euler_Shocktube_3D::primitive_to_conservative(const Euclidean_Vector& primitive_variable) const
+// Euclidean_Vector Euler_Shocktube_3D::primitive_to_conservative(const Euclidean_Vector& primitive_variable) const
 //{
 //  constexpr auto gamma = 1.4;
 //  constexpr auto c     = 1 / (gamma - 1);
@@ -117,7 +117,7 @@ void Sine_Wave::calculate_solution(double* solution, const double* coordinates) 
 //  return {rho, rhou, rhov, rhow, rhoE};
 //}
 //
-//Euclidean_Vector SOD_2D::calculate_solution(const Euclidean_Vector& space_vector) const
+// Euclidean_Vector SOD_2D::calculate_solution(const Euclidean_Vector& space_vector) const
 //{
 //  constexpr auto discontinuity_location = 0.5;
 //
@@ -143,7 +143,7 @@ void Sine_Wave::calculate_solution(double* solution, const double* coordinates) 
 //  }
 //}
 //
-//Euclidean_Vector SOD_3D::calculate_solution(const Euclidean_Vector& space_vector) const
+// Euclidean_Vector SOD_3D::calculate_solution(const Euclidean_Vector& space_vector) const
 //{
 //  constexpr auto discontinuity_location = 0.5;
 //
@@ -171,7 +171,7 @@ void Sine_Wave::calculate_solution(double* solution, const double* coordinates) 
 //  }
 //}
 //
-//Euclidean_Vector Modified_SOD_2D::calculate_solution(const Euclidean_Vector& space_vector) const
+// Euclidean_Vector Modified_SOD_2D::calculate_solution(const Euclidean_Vector& space_vector) const
 //{
 //  constexpr auto discontinuity_location = 0.3;
 //
@@ -197,7 +197,7 @@ void Sine_Wave::calculate_solution(double* solution, const double* coordinates) 
 //  }
 //}
 //
-//Euclidean_Vector Modified_SOD_3D::calculate_solution(const Euclidean_Vector& space_vector) const
+// Euclidean_Vector Modified_SOD_3D::calculate_solution(const Euclidean_Vector& space_vector) const
 //{
 //  constexpr auto discontinuity_location = 0.3;
 //
@@ -225,7 +225,7 @@ void Sine_Wave::calculate_solution(double* solution, const double* coordinates) 
 //  }
 //}
 //
-//Euclidean_Vector Supersonic_Expansion_2D::calculate_solution(const Euclidean_Vector& space_vector) const
+// Euclidean_Vector Supersonic_Expansion_2D::calculate_solution(const Euclidean_Vector& space_vector) const
 //{
 //  constexpr auto discontinuity_location = 0.5;
 //
@@ -257,7 +257,7 @@ void Sine_Wave::calculate_solution(double* solution, const double* coordinates) 
 //  }
 //}
 //
-//Euclidean_Vector Supersonic_Expansion_3D::calculate_solution(const Euclidean_Vector& space_vector) const
+// Euclidean_Vector Supersonic_Expansion_3D::calculate_solution(const Euclidean_Vector& space_vector) const
 //{
 //  constexpr auto discontinuity_location = 0.5;
 //
@@ -293,7 +293,7 @@ void Sine_Wave::calculate_solution(double* solution, const double* coordinates) 
 //  }
 //}
 //
-//Euclidean_Vector Left_Half_Blast_Wave_2D::calculate_solution(const Euclidean_Vector& space_vector) const
+// Euclidean_Vector Left_Half_Blast_Wave_2D::calculate_solution(const Euclidean_Vector& space_vector) const
 //{
 //  constexpr auto discontinuity_location = 0.5;
 //
@@ -319,7 +319,7 @@ void Sine_Wave::calculate_solution(double* solution, const double* coordinates) 
 //  }
 //}
 //
-//Euclidean_Vector Left_Half_Blast_Wave_3D::calculate_solution(const Euclidean_Vector& space_vector) const
+// Euclidean_Vector Left_Half_Blast_Wave_3D::calculate_solution(const Euclidean_Vector& space_vector) const
 //{
 //  constexpr auto discontinuity_location = 0.5;
 //
@@ -347,7 +347,7 @@ void Sine_Wave::calculate_solution(double* solution, const double* coordinates) 
 //  }
 //}
 //
-//Euclidean_Vector Double_Strong_Shock_2D::calculate_solution(const Euclidean_Vector& space_vector) const
+// Euclidean_Vector Double_Strong_Shock_2D::calculate_solution(const Euclidean_Vector& space_vector) const
 //{
 //  constexpr auto discontinuity_location = 0.4;
 //
@@ -373,7 +373,7 @@ void Sine_Wave::calculate_solution(double* solution, const double* coordinates) 
 //  }
 //}
 //
-//Euclidean_Vector Double_Strong_Shock_3D::calculate_solution(const Euclidean_Vector& space_vector) const
+// Euclidean_Vector Double_Strong_Shock_3D::calculate_solution(const Euclidean_Vector& space_vector) const
 //{
 //  constexpr auto discontinuity_location = 0.4;
 //
@@ -401,7 +401,7 @@ void Sine_Wave::calculate_solution(double* solution, const double* coordinates) 
 //  }
 //}
 //
-//Euclidean_Vector Slowly_Moving_Contact_2D::calculate_solution(const Euclidean_Vector& space_vector) const
+// Euclidean_Vector Slowly_Moving_Contact_2D::calculate_solution(const Euclidean_Vector& space_vector) const
 //{
 //  constexpr auto discontinuity_location = 0.8;
 //
@@ -427,7 +427,7 @@ void Sine_Wave::calculate_solution(double* solution, const double* coordinates) 
 //  }
 //}
 //
-//Euclidean_Vector Slowly_Moving_Contact_3D::calculate_solution(const Euclidean_Vector& space_vector) const
+// Euclidean_Vector Slowly_Moving_Contact_3D::calculate_solution(const Euclidean_Vector& space_vector) const
 //{
 //  constexpr auto discontinuity_location = 0.8;
 //
@@ -455,7 +455,7 @@ void Sine_Wave::calculate_solution(double* solution, const double* coordinates) 
 //  }
 //}
 //
-//Euclidean_Vector Harten_Lax_2D::calculate_solution(const Euclidean_Vector& space_vector) const
+// Euclidean_Vector Harten_Lax_2D::calculate_solution(const Euclidean_Vector& space_vector) const
 //{
 //  constexpr auto discontinuity_location = 0.5;
 //
@@ -481,7 +481,7 @@ void Sine_Wave::calculate_solution(double* solution, const double* coordinates) 
 //  }
 //}
 //
-//Euclidean_Vector Harten_Lax_3D::calculate_solution(const Euclidean_Vector& space_vector) const
+// Euclidean_Vector Harten_Lax_3D::calculate_solution(const Euclidean_Vector& space_vector) const
 //{
 //  constexpr auto discontinuity_location = 0.5;
 //
@@ -509,7 +509,7 @@ void Sine_Wave::calculate_solution(double* solution, const double* coordinates) 
 //  }
 //}
 //
-//Euclidean_Vector Shu_Osher_2D::calculate_solution(const Euclidean_Vector& space_vector) const
+// Euclidean_Vector Shu_Osher_2D::calculate_solution(const Euclidean_Vector& space_vector) const
 //{
 //  constexpr auto discontinuity_location = 0.125;
 //
@@ -535,7 +535,7 @@ void Sine_Wave::calculate_solution(double* solution, const double* coordinates) 
 //  }
 //}
 //
-//Euclidean_Vector Shu_Osher_3D::calculate_solution(const Euclidean_Vector& space_vector) const
+// Euclidean_Vector Shu_Osher_3D::calculate_solution(const Euclidean_Vector& space_vector) const
 //{
 //  constexpr auto discontinuity_location = 0.125;
 //
@@ -563,7 +563,7 @@ void Sine_Wave::calculate_solution(double* solution, const double* coordinates) 
 //  }
 //}
 //
-//Euclidean_Vector Blast_Wave_2D::calculate_solution(const Euclidean_Vector& space_vector) const
+// Euclidean_Vector Blast_Wave_2D::calculate_solution(const Euclidean_Vector& space_vector) const
 //{
 //  constexpr auto discontinuity_location1 = 0.1;
 //  constexpr auto discontinuity_location2 = 0.9;
@@ -599,7 +599,7 @@ void Sine_Wave::calculate_solution(double* solution, const double* coordinates) 
 //  }
 //}
 //
-//Euclidean_Vector Blast_Wave_3D::calculate_solution(const Euclidean_Vector& space_vector) const
+// Euclidean_Vector Blast_Wave_3D::calculate_solution(const Euclidean_Vector& space_vector) const
 //{
 //  constexpr auto discontinuity_location1 = 0.1;
 //  constexpr auto discontinuity_location2 = 0.9;
@@ -638,7 +638,7 @@ void Sine_Wave::calculate_solution(double* solution, const double* coordinates) 
 //  }
 //}
 //
-//Euclidean_Vector Leblanc_2D::calculate_solution(const Euclidean_Vector& space_vector) const
+// Euclidean_Vector Leblanc_2D::calculate_solution(const Euclidean_Vector& space_vector) const
 //{
 //  constexpr auto discontinuity_location1 = 3;
 //
@@ -664,7 +664,7 @@ void Sine_Wave::calculate_solution(double* solution, const double* coordinates) 
 //  }
 //}
 //
-//Euclidean_Vector Explosion_2D::calculate_solution(const Euclidean_Vector& space_vector) const
+// Euclidean_Vector Explosion_2D::calculate_solution(const Euclidean_Vector& space_vector) const
 //{
 //  constexpr auto discontinuity_radius = 0.4;
 //
@@ -690,7 +690,7 @@ void Sine_Wave::calculate_solution(double* solution, const double* coordinates) 
 //  }
 //}
 //
-//Euclidean_Vector Explosion_3D::calculate_solution(const Euclidean_Vector& space_vector) const
+// Euclidean_Vector Explosion_3D::calculate_solution(const Euclidean_Vector& space_vector) const
 //{
 //  constexpr auto discontinuity_radius = 0.4;
 //
@@ -718,7 +718,7 @@ void Sine_Wave::calculate_solution(double* solution, const double* coordinates) 
 //  }
 //}
 //
-//std::unique_ptr<Initial_Condition> Initial_Condition_Factory::make_unique(const Configuration& configuration)
+// std::unique_ptr<Initial_Condition> Initial_Condition_Factory::make_unique(const Configuration& configuration)
 //{
 //  const auto& name            = configuration.get_initial_condition();
 //  const auto  space_dimension = configuration.space_dimension();
